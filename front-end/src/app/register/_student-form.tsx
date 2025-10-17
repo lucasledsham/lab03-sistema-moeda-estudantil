@@ -46,7 +46,7 @@ const formSchema = z
     message: "As senhas devem ser iguais",
   });
 
-export default function CadastroAlunoForm() {
+export default function RegisterStudentForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -85,11 +85,11 @@ export default function CadastroAlunoForm() {
     }
   }
   return (
-    <Card className="col-span-1 mx-auto my-20 max-w-sm md:max-w-md xl:max-w-xl">
+    <Card className=" mx-auto w-sm md:w-md xl:w-xl">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="">
           <CardHeader>
-            <h1 className="text-2xl font-bold mx-auto">Cadastrar usuário</h1>
+            <h1 className="text-2xl font-bold mx-auto">Cadastro de Aluno</h1>
           </CardHeader>
           <CardContent className="flex flex-col gap-2 pb-6">
             <FormField

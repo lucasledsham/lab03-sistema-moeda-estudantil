@@ -74,7 +74,7 @@ export default function LoginForm() {
     }
   }
   return (
-    <Card className="col-span-1 mx-auto my-20 max-w-sm md:max-w-md">
+    <Card className="col-span-1 mx-auto  max-w-sm md:max-w-md">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="">
           <CardHeader>

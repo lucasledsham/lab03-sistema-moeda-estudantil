@@ -24,7 +24,13 @@ public class User implements UserDetails {
     private String id;
 
     @Indexed(unique = true)
-    private String nome;
+    private String name;
+
+    private String adress;
+
+    private String rg;
+
+    private String cpf;
 
     @JsonIgnore
     private String password;
@@ -35,13 +41,13 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRole.AGENTE) {
+        if (this.role == UserRole.EMPRESA) {
             return List.of(
-                    new SimpleGrantedAuthority("ROLE_AGENTE"),
-                    new SimpleGrantedAuthority("ROLE_CLIENTE")
+                    new SimpleGrantedAuthority("ROLE_ALUNO"),
+                    new SimpleGrantedAuthority("ROLE_EMPRESA")
             );
         } else {
-            return List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));
+            return List.of(new SimpleGrantedAuthority("ROLE_EMPRESA"));
         }
     }
 

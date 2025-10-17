@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const AUTH_API_URL = "http://localhost:8080/auth/me";
+const AUTH_API_URL = "http://localhost:9090/auth/me";
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("authToken")?.value;

@@ -40,6 +40,7 @@ const formSchema = z
     rg: z.string(),
     adress: z.string(),
     class: z.string(),
+    userRole: z.enum(["STUDENT",])
   })
   .refine(({ confirm, password }) => confirm === password, {
     path: ["confirm"],
@@ -58,6 +59,7 @@ export default function RegisterStudentForm() {
       rg: "",
       adress: "",
       class: "",
+      userRole: "STUDENT",
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {

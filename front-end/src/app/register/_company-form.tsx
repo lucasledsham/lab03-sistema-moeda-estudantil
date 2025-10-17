@@ -37,6 +37,7 @@ const formSchema = z
     password: z.string(),
     confirm: z.string(),
     cnpj: z.string(),
+    userRole: z.enum(["COMPANY",])
   })
   .refine(({ confirm, password }) => confirm === password, {
     path: ["confirm"],
@@ -52,6 +53,7 @@ export default function RegisterCompanyForm() {
       password: "",
       confirm: "",
       cnpj: "",
+      userRole: "COMPANY",
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {

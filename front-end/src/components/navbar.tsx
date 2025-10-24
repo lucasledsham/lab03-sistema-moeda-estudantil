@@ -31,7 +31,7 @@ export default function Navbar({
         className
       )}
     >
-      <div className="mx full bg-card/60 pt-0 border-b mb-32 rounded-b-lg shadow-lg">
+      <div className="mx full bg-card/60 pt-0 border-b rounded-b-lg shadow-lg">
         <div className="mx-auto flex max-w-screen-xl items-center justify-between px-4">
           <Image src={logo} alt="foto perfil" width={100} height={100}></Image>
 

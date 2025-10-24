@@ -58,7 +58,7 @@ export default function LoginForm() {
       });
       console.log(res);
       if (res.ok) {
-        router.push("/pedidos");
+        router.push("/test");
       } else {
         toast.error("Erro ao fazer login", {
           description: "Dados da conta incorretos",
@@ -120,7 +120,7 @@ export default function LoginForm() {
             <Button
               type="button"
               className="mx-full w-72 "
-              onClick={() => router.push("/register")}
+              onClick={() => router.push("/logado")}
             >
               Cadastrar-se
             </Button>

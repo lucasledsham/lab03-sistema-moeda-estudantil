@@ -2,7 +2,7 @@
 
 ## 🧩 Descrição do Projeto
 
-O **Sistema de Mérito Estudantil** tem como objetivo **estimular o reconhecimento do desempenho acadêmico** através da utilização de uma **moeda virtual**.  
+O **EduCoin** tem como objetivo **estimular o reconhecimento do desempenho acadêmico** através da utilização de uma **moeda virtual**.  
 Professores podem distribuir moedas a seus alunos como forma de reconhecimento por bom comportamento, participação ou desempenho, e os alunos podem trocá-las por produtos ou descontos em **empresas parceiras**.
 
 ---

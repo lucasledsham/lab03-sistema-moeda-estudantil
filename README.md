@@ -1,4 +1,4 @@
-# 💰 Sistema de Mérito Estudantil com Moeda Virtual
+# 💰 EduCoin - Sistema de Mérito Estudantil com Moeda Virtual
 
 ## 🧩 Descrição do Projeto
 

@@ -58,7 +58,7 @@ export default function LoginForm() {
       });
       console.log(res);
       if (res.ok) {
-        router.push("/test");
+        router.push("/home");
       } else {
         toast.error("Erro ao fazer login", {
           description: "Dados da conta incorretos",

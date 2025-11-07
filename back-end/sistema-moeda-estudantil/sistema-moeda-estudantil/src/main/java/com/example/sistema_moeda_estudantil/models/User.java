@@ -39,6 +39,8 @@ public class User implements UserDetails {
 
     private String email;
 
+    private float currency = 0;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == UserRole.COMPANY) {

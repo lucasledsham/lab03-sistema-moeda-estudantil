@@ -1,12 +1,10 @@
 import type { Balance, Transaction } from "../schemas/financeSchemas";
-import { User } from "../schemas/paymentSchemas";
+import { CurrentUser, User } from "../schemas/paymentSchemas";
 
-// Dados mockados para o Saldo
 export const MOCK_BALANCE: Balance = {
   balance: 50,
 };
 
-// Dados mockados para a Lista de Transações
 export const MOCK_TRANSACTIONS: Transaction[] = [
   {
     id: "a1b2c3d4",
@@ -37,31 +35,44 @@ export const MOCK_USERS: User[] = [
   {
     id: "a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1",
     name: "Ana Beatriz (Aluna)",
+    email: "gmbferreira12@getMaxListeners.com",
     role: "STUDENT",
   },
   {
     id: "b2b2b2b2-b2b2-b2b2-b2b2-b2b2b2b2b2b2",
     name: "Bruno Costa (Aluno)",
+    email: "gmbferreira12@getMaxListeners.com",
     role: "STUDENT",
   },
   {
     id: "c3c3c3c3-c3c3-c3c3-c3c3-c3c3c3c3c3c3",
     name: "Prof. Carlos (Professor)",
+    email: "gmbferreira12@getMaxListeners.com",
     role: "TEACHER",
   },
   {
     id: "d4d4d4d4-d4d4-d4d4-d4d4-d4d4d4d4d4d4",
     name: "Daniela Alves (Aluna)",
+    email: "gmbferreira12@getMaxListeners.com",
     role: "STUDENT",
   },
   {
     id: "e5e5e5e5-e5e5-e5e5-e5e5-e5e5e5e5e5e5",
     name: "Eduardo Moreira (Adm)",
+    email: "gmbferreira12@getMaxListeners.com",
     role: "ADMIN",
   },
   {
     id: "f6f6f6f6-f6f6-f6f6-f6f6-f6f6f6f6f6f6",
     name: "Fernanda Lima (Aluna)",
+    email: "gmbferreira12@getMaxListeners.com",
     role: "STUDENT",
   },
 ];
+export const MOCK_CURRENT_USER: CurrentUser = {
+  id: "current-user-id-mock",
+  name: "Usuário Logado (Mock)",
+  email: "usuario.logado@escola.mock",
+  role: "STUDENT",
+  balance: 500.0,
+};

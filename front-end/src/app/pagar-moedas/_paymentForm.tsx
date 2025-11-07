@@ -12,14 +12,21 @@ import {
   Loader2,
 } from "lucide-react";
 
+// SDK do EmailJS
+import emailjs from "@emailjs/browser";
+// Configuração do EmailJS que criamos
+import EMAILJS_CONFIG from "@/lib/config/configEmailJS";
+
 // Schemas e Mocks
-import { balanceSchema, type Balance } from "@/lib/schemas/financeSchemas";
+// IMPORTANTE: Removemos balanceSchema daqui e usamos currentUserSchema
 import {
   userListSchema,
   paymentPayloadSchema,
+  currentUserSchema, // NOVO
   type User,
+  type CurrentUser, // NOVO
 } from "@/lib/schemas/paymentSchemas";
-import { MOCK_BALANCE, MOCK_USERS } from "@/lib/mocks/financeMocks";
+import { MOCK_USERS, MOCK_CURRENT_USER } from "@/lib/mocks/financeMocks";
 
 // Componentes Shadcn/ui
 import { Button } from "@/components/ui/button";
@@ -55,18 +62,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-
-// Toast (Sonner)
 import { toast } from "sonner";
 
-// --- Constantes da API (CORREÇÃO) ---
-// Adicionadas as constantes que faltavam
 const API_BASE_URL = "http://localhost:9090";
-const BALANCE_API_ROUTE = `${API_BASE_URL}/api/balance`;
+const CURRENT_USER_API_ROUTE = `${API_BASE_URL}/api/currentUser`;
 const USERS_API_ROUTE = `${API_BASE_URL}/api/users`;
 const PAYMENT_API_ROUTE = `${API_BASE_URL}/api/payment`;
 
-// --- Funções Auxiliares de Formatação ---
 function formatNumber(amount: number) {
   return new Intl.NumberFormat("pt-BR", {
     minimumFractionDigits: 2,
@@ -75,8 +77,8 @@ function formatNumber(amount: number) {
 }
 
 // --- Componente Principal ---
-export function PaymentForm() {
-  const [balance, setBalance] = useState<Balance | null>(null);
+export function PaymentPage() {
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [students, setStudents] = useState<User[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -86,33 +88,29 @@ export function PaymentForm() {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(paymentPayloadSchema),
-    defaultValues: {
-      recipientId: "",
-      amount: 0,
-      message: "",
-    },
+    defaultValues: { recipientId: "", amount: 0, message: "" },
   });
 
   const fetchData = async () => {
     setIsLoadingData(true);
     setIsMockData(false);
     try {
-      const [balanceRes, usersRes] = await Promise.all([
-        fetch(BALANCE_API_ROUTE),
+      const [currentUserRes, usersRes] = await Promise.all([
+        fetch(CURRENT_USER_API_ROUTE),
         fetch(USERS_API_ROUTE),
       ]);
 
-      if (!balanceRes.ok || !usersRes.ok) {
+      if (!currentUserRes.ok || !usersRes.ok) {
         throw new Error("Falha ao buscar dados da API.");
       }
 
-      const balanceData = await balanceRes.json();
+      const currentUserData = await currentUserRes.json();
       const usersData = await usersRes.json();
 
-      const validatedBalance = balanceSchema.parse(balanceData);
+      const validatedCurrentUser = currentUserSchema.parse(currentUserData);
       const validatedUsers = userListSchema.parse(usersData);
 
-      setBalance(validatedBalance);
+      setCurrentUser(validatedCurrentUser);
       setStudents(validatedUsers.filter((user) => user.role === "STUDENT"));
     } catch (err) {
       console.warn("API falhou. Carregando dados mockados.", err);
@@ -120,7 +118,7 @@ export function PaymentForm() {
         description: "Carregando dados de simulação.",
       });
       setIsMockData(true);
-      setBalance(MOCK_BALANCE);
+      setCurrentUser(MOCK_CURRENT_USER);
       setStudents(MOCK_USERS.filter((user) => user.role === "STUDENT"));
     } finally {
       setIsLoadingData(false);
@@ -131,10 +129,61 @@ export function PaymentForm() {
     fetchData();
   }, []);
 
+  const sendPaymentEmails = async (paymentData: FormValues, receiver: User) => {
+    if (!currentUser) return;
+
+    const time = new Date().toLocaleString("pt-BR");
+    const commonParams = {
+      sender_name: currentUser.name,
+      receiver_name: receiver.name,
+      amount: formatNumber(paymentData.amount),
+      message: paymentData.message,
+      time: time,
+    };
+
+    const senderParams = {
+      ...commonParams,
+      to_email: currentUser.email,
+    };
+
+    const receiverParams = {
+      ...commonParams,
+      to_email: receiver.email,
+    };
+    const emailPromises = [
+      emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID_SENDER,
+        senderParams,
+        EMAILJS_CONFIG.PUBLIC_KEY
+      ),
+      emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID_RECEIVER,
+        receiverParams,
+        EMAILJS_CONFIG.PUBLIC_KEY
+      ),
+    ];
+
+    const results = await Promise.allSettled(emailPromises);
+
+    results.forEach((result, index) => {
+      const emailType = index === 0 ? "Remetente" : "Destinatário";
+      if (result.status === "fulfilled") {
+        console.log(`Email para ${emailType} enviado com sucesso.`);
+      } else {
+        console.error(
+          `Falha ao enviar e-mail para ${emailType}:`,
+          result.reason
+        );
+      }
+    });
+  };
+
   async function onSubmit(values: FormValues) {
     setIsSubmitting(true);
 
-    if (!balance || values.amount > balance.balance) {
+    if (!currentUser || values.amount > currentUser.balance) {
       toast.error("Saldo insuficiente", {
         description: "O valor a transferir é maior que o seu saldo atual.",
       });
@@ -157,6 +206,11 @@ export function PaymentForm() {
       toast.success("Pagamento enviado!", {
         description: "Suas moedas foram transferidas com sucesso.",
       });
+
+      const receiver = students.find((s) => s.id === values.recipientId);
+      if (receiver) {
+        sendPaymentEmails(values, receiver);
+      }
 
       form.reset();
       fetchData();
@@ -201,6 +255,7 @@ export function PaymentForm() {
             </CardContent>
           </Card>
         )}
+        {/* Card de Saldo*/}
         <Card>
           <CardHeader>
             <CardTitle>Meu Saldo</CardTitle>
@@ -208,7 +263,7 @@ export function PaymentForm() {
           <CardContent>
             <p className="text-4xl font-bold inline-flex items-center gap-2">
               <Coins className="h-8 w-8 text-yellow-500" />
-              {balance ? formatNumber(balance.balance) : "--"}
+              {currentUser ? formatNumber(currentUser.balance) : "--"}
             </p>
           </CardContent>
         </Card>
@@ -254,7 +309,7 @@ export function PaymentForm() {
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                        <PopoverContent className="w-[--radix-popvert-trigger-width] p-0">
                           <Command>
                             <CommandInput placeholder="Procurar aluno..." />
                             <CommandList>
@@ -308,7 +363,7 @@ export function PaymentForm() {
                       </FormControl>
                       <FormDescription>
                         Seu saldo atual é:{" "}
-                        {balance ? formatNumber(balance.balance) : 0}
+                        {currentUser ? formatNumber(currentUser.balance) : 0}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

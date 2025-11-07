@@ -6,6 +6,7 @@ export type UserRole = z.infer<typeof userRoleSchema>;
 export const userSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
+  email: z.string().email(),
   role: userRoleSchema,
 });
 
@@ -17,6 +18,10 @@ export const paymentPayloadSchema = z.object({
 
   message: z.string().min(1, { message: "A mensagem é obrigatória." }),
 });
+export const currentUserSchema = userSchema.extend({
+  balance: z.number(),
+});
+export type CurrentUser = z.infer<typeof currentUserSchema>;
 
 export type User = z.infer<typeof userSchema>;
 export type PaymentPayload = z.infer<typeof paymentPayloadSchema>;

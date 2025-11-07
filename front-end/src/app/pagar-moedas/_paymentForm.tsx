@@ -61,9 +61,9 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 const API_BASE_URL = "http://localhost:9090";
-const CURRENT_USER_API_ROUTE = `${API_BASE_URL}/api/currentUser`;
-const USERS_API_ROUTE = `${API_BASE_URL}/api/users`;
-const PAYMENT_API_ROUTE = `${API_BASE_URL}/api/payment`;
+const CURRENT_USER_API_ROUTE = `${API_BASE_URL}/currentUser`;
+const USERS_API_ROUTE = `${API_BASE_URL}/users`;
+const PAYMENT_API_ROUTE = `${API_BASE_URL}/payment`;
 
 function formatNumber(amount: number) {
   return new Intl.NumberFormat("pt-BR", {

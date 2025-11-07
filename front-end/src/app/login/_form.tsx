@@ -22,13 +22,11 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-</head>;
+// Removido uso incorreto de <head>; use metadata ou next/head se necessário.
 
 const formSchema = z.object({
-  email: z.email(),
-  password: z.string(),
+  email: z.string().email("E-mail inválido"),
+  password: z.string().min(1, "Senha obrigatória"),
 });
 
 export default function LoginForm() {
@@ -40,6 +38,13 @@ export default function LoginForm() {
       password: "",
     },
   });
+  async function safeErrorText(res: Response) {
+    try {
+      return await res.text();
+    } catch (e) {
+      return "Erro desconhecido";
+    }
+  }
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const res = await fetch("http://localhost:9090/auth/login", {
@@ -49,14 +54,47 @@ export default function LoginForm() {
         },
         body: JSON.stringify(values),
       });
-      console.log(res);
+      console.log("[LOGIN] status:", res.status);
       if (res.ok) {
-        router.push("/home");
+        let data: any = {};
+        try {
+          data = await res.json();
+        } catch (e) {
+          console.warn("Resposta sem JSON válido.");
+        }
+        if (data.token) {
+          localStorage.setItem("authToken", data.token);
+        }
+        if (data.userId) {
+          localStorage.setItem("userId", data.userId);
+        }
+        // Feedback de sucesso
+        toast.success("Login realizado", {
+          description: "Redirecionando...",
+          duration: 2500,
+        });
+        // Função de navegação robusta
+        const navigateToHome = () => {
+          try {
+            router.push("/home");
+            console.log("[LOGIN] router.push('/home') chamado");
+            // Fallback caso o push não reflita visualmente rápido
+            setTimeout(() => {
+              console.log("[LOGIN] Fallback router.replace('/home')");
+              router.replace("/home");
+            }, 1500);
+          } catch (navErr) {
+            console.error("[LOGIN] Erro ao navegar", navErr);
+          }
+        };
+        // Usa microtask para garantir que state/localStorage finalize
+        Promise.resolve().then(navigateToHome);
       } else {
         toast.error("Erro ao fazer login", {
           description: "Dados da conta incorretos",
           duration: 5000,
         });
+        console.error("[LOGIN] Falha", await safeErrorText(res));
       }
     } catch (error) {
       console.error(error);

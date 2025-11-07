@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -45,6 +47,7 @@ const formSchema = z
   });
 
 export default function RegisterCompanyForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,18 +69,32 @@ export default function RegisterCompanyForm() {
         },
         body: JSON.stringify(userData),
       });
+      console.log("[REGISTER/COMPANY] status:", res.status);
       if (res.ok) {
-        // toast({
-        //   title: "Sucesso!",
-        //   description: "Cadastrado com sucesso",
-        //   variant: "success",
-        // });
+        let data: any = {};
+        try {
+          data = await res.json();
+        } catch (e) {
+          console.warn("Resposta sem JSON válido após registro.");
+        }
+        if (data.token) {
+          localStorage.setItem("authToken", data.token);
+        }
+        if (data.userId) {
+          localStorage.setItem("userId", data.userId);
+        }
+        toast.success("Cadastro realizado", { description: "Entrando..." });
         form.reset();
+        setTimeout(() => {
+          router.push("/home");
+        }, 500);
       } else {
-        throw new Error();
+        const errorText = await res.text().catch(() => "Erro desconhecido");
+        toast.error("Falha no cadastro", { description: errorText });
       }
     } catch (error) {
       console.error(error);
+      toast.error("Erro de conexão", { description: "Servidor inacessível" });
     }
   }
   return (

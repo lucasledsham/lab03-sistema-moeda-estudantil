@@ -24,8 +24,8 @@ import { AlertTriangle, Coins } from "lucide-react";
 
 //TODO-- Arrumar a url da api
 const API_BASE_URL = "http://localhost:9090";
-const BALANCE_API_ROUTE = `${API_BASE_URL}/api/balance`;
-const TRANSACTIONS_API_ROUTE = `${API_BASE_URL}/api/transactions`;
+const BALANCE_API_ROUTE = `${API_BASE_URL}/moeda/balance`;
+const TRANSACTIONS_API_ROUTE = `${API_BASE_URL}/moeda/transactions`;
 
 function formatNumber(amount: number) {
   return new Intl.NumberFormat("pt-BR", {
@@ -67,9 +67,14 @@ export function TransactionDashboard() {
       setIsLoading(true);
       setIsMockData(false);
       try {
+        const token = localStorage.getItem("authToken");
+        const headersObj: HeadersInit = token
+          ? { Authorization: `Bearer ${token}` }
+          : {};
+
         const [balanceRes, transactionsRes] = await Promise.all([
-          fetch(BALANCE_API_ROUTE),
-          fetch(TRANSACTIONS_API_ROUTE),
+          fetch(BALANCE_API_ROUTE, { headers: headersObj }),
+          fetch(TRANSACTIONS_API_ROUTE, { headers: headersObj }),
         ]);
 
         if (!balanceRes.ok || !transactionsRes.ok) {

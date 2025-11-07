@@ -1,4 +1,5 @@
 import type { Balance, Transaction } from "../schemas/financeSchemas";
+import { User } from "../schemas/paymentSchemas";
 
 // Dados mockados para o Saldo
 export const MOCK_BALANCE: Balance = {
@@ -30,5 +31,37 @@ export const MOCK_TRANSACTIONS: Transaction[] = [
     amount: -101,
     recipient: "Tito Testador",
     date: new Date(Date.now() - 86400000 * 7), // 7 dias atrás
+  },
+];
+export const MOCK_USERS: User[] = [
+  {
+    id: "a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1",
+    name: "Ana Beatriz (Aluna)",
+    role: "STUDENT",
+  },
+  {
+    id: "b2b2b2b2-b2b2-b2b2-b2b2-b2b2b2b2b2b2",
+    name: "Bruno Costa (Aluno)",
+    role: "STUDENT",
+  },
+  {
+    id: "c3c3c3c3-c3c3-c3c3-c3c3-c3c3c3c3c3c3",
+    name: "Prof. Carlos (Professor)",
+    role: "TEACHER",
+  },
+  {
+    id: "d4d4d4d4-d4d4-d4d4-d4d4-d4d4d4d4d4d4",
+    name: "Daniela Alves (Aluna)",
+    role: "STUDENT",
+  },
+  {
+    id: "e5e5e5e5-e5e5-e5e5-e5e5-e5e5e5e5e5e5",
+    name: "Eduardo Moreira (Adm)",
+    role: "ADMIN",
+  },
+  {
+    id: "f6f6f6f6-f6f6-f6f6-f6f6-f6f6f6f6f6f6",
+    name: "Fernanda Lima (Aluna)",
+    role: "STUDENT",
   },
 ];

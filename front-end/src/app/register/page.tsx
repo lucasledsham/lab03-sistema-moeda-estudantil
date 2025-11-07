@@ -16,7 +16,7 @@ export default function Page() {
   return (
     <>
       <Navbar links={[{ href: "/", title: "Voltar" }]} />
-      <h1 className="text-center text-6xl mb-10 font-bold">Educoin</h1>
+      <h1 className="text-center text-6xl mb-10 font-bold mt-8">Educoin</h1>
 
       <div className="flex flex-col items-center">
         <ButtonGroup className="">

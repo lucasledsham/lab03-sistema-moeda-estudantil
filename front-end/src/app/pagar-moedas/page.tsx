@@ -1,5 +1,5 @@
 import Navbar from "@/components/navbar";
-import { TransactionDashboard } from "./_transactionDashboard";
+import { PaymentForm } from "./_paymentForm";
 import { Coins } from "lucide-react";
 
 export default function page() {
@@ -17,11 +17,10 @@ export default function page() {
       ></Navbar>
       <div className="text-center sm:text-2xl md:text-4xl xl:text-6xl mb-10 font-bold mt-8 items-center flex justify-center gap-16">
         <Coins className="text-amber-600 " />
-        <h1 className="">Minhas Moedas</h1>
+        <h1 className="">Transferencia de moedas</h1>
         <Coins className="text-amber-600" />
       </div>
-
-      <TransactionDashboard></TransactionDashboard>
+      <PaymentForm></PaymentForm>
     </>
   );
 }

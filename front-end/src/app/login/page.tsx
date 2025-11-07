@@ -5,7 +5,7 @@ export default function page() {
   return (
     <>
       <Navbar></Navbar>
-      <h1 className="text-center text-6xl mb-10 font-bold">Educoin</h1>
+      <h1 className="text-center text-6xl mb-10 font-bold mt-8">Educoin</h1>
       <LoginForm />
     </>
   );

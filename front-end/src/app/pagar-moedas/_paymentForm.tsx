@@ -12,23 +12,19 @@ import {
   Loader2,
 } from "lucide-react";
 
-// SDK do EmailJS
 import emailjs from "@emailjs/browser";
-// Configuração do EmailJS que criamos
+
 import EMAILJS_CONFIG from "@/lib/config/configEmailJS";
 
-// Schemas e Mocks
-// IMPORTANTE: Removemos balanceSchema daqui e usamos currentUserSchema
 import {
   userListSchema,
   paymentPayloadSchema,
-  currentUserSchema, // NOVO
+  currentUserSchema,
   type User,
-  type CurrentUser, // NOVO
+  type CurrentUser,
 } from "@/lib/schemas/paymentSchemas";
 import { MOCK_USERS, MOCK_CURRENT_USER } from "@/lib/mocks/financeMocks";
 
-// Componentes Shadcn/ui
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -76,8 +72,7 @@ function formatNumber(amount: number) {
   }).format(amount);
 }
 
-// --- Componente Principal ---
-export function PaymentPage() {
+export function PaymentForm() {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [students, setStudents] = useState<User[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(true);

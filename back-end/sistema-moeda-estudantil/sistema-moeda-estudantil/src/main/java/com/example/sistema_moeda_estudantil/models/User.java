@@ -52,7 +52,8 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        // Use email as unique username for authentication/JWT subject
+        return this.email;
     }
 
     @Override

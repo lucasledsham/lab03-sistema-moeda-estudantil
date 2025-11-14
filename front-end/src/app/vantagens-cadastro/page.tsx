@@ -1,30 +1,70 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BenefitForm, { BenefitsFormValues } from "./_form";
+
+interface User {
+  id: string;
+  name: string;
+}
 
 export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        setError(null);
+
+        //TODO: Ajustar a URL para o endpoint correto
+        const response = await fetch("http://localhost:9090/auth/me");
+
+        if (!response.ok) {
+          throw new Error("Falha ao carregar dados do usuário.");
+        }
+
+        const userData: User = await response.json();
+        setUser(userData);
+      } catch (err: any) {
+        console.error(err);
+        setError(err.message || "Você não está autenticado.");
+      } finally {
+        setIsLoadingUser(false);
+      }
+    }
+
+    fetchUser();
+  }, []);
+
   async function handleSubmit(values: BenefitsFormValues) {
+    if (!user) {
+      setError(
+        "Não foi possível identificar o usuário. Tente recarregar a página."
+      );
+      return;
+    }
+
     setIsSubmitting(true);
     setError(null);
     console.log("Dados do formulário:", values);
+    console.log("Enviando como usuário:", user.name);
+
     const formData = new FormData();
+    formData.append("userId", user.id);
     const benefitsMetadata = values.benefits.map((benefit) => ({
       description: benefit.description,
       cost: benefit.cost,
     }));
-
     formData.append("benefitsData", JSON.stringify(benefitsMetadata));
-
     values.benefits.forEach((benefit) => {
       if (benefit.image instanceof File) {
         formData.append("images", benefit.image);
       }
     });
 
-    //TODO: Ajustar a URL conforme necessário
+    //TODO: Ajustar a URL para o endpoint correto
     try {
       const response = await fetch("http://localhost:9090/benefits", {
         method: "POST",
@@ -44,21 +84,36 @@ export default function Page() {
     } finally {
       setIsSubmitting(false);
     }
-    setTimeout(() => {
-      setIsSubmitting(false);
-      console.log("Simulação de envio concluída.");
-    }, 1000);
   }
 
-  return (
-    <main className="container mx-auto p-8">
-      <BenefitForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
+  const renderContent = () => {
+    if (isLoadingUser) {
+      return <p className="text-center">Carregando dados do usuário...</p>;
+    }
 
-      {error && (
-        <p className="mt-4 text-red-600">
+    if (error && !user) {
+      return (
+        <p className="mt-4 text-red-600 text-center">
           <strong>Erro:</strong> {error}
         </p>
-      )}
-    </main>
-  );
+      );
+    }
+
+    if (user) {
+      return (
+        <>
+          <BenefitForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
+          {error && (
+            <p className="mt-4 text-red-600">
+              <strong>Erro:</strong> {error}
+            </p>
+          )}
+        </>
+      );
+    }
+
+    return null;
+  };
+
+  return <main className="container mx-auto p-8">{renderContent()}</main>;
 }

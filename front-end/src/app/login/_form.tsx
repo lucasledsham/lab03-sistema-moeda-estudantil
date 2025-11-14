@@ -151,7 +151,7 @@ export default function LoginForm() {
             <Button
               type="button"
               className="mx-full w-72 "
-              onClick={() => router.push("/logado")}
+              onClick={() => router.push("/register")}
             >
               Cadastrar-se
             </Button>

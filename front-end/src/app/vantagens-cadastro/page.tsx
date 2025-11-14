@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import BenefitForm, { BenefitsFormValues } from "./_form";
+import Navbar from "@/components/navbar";
 
 interface User {
   id: string;
@@ -115,5 +116,21 @@ export default function Page() {
     return null;
   };
 
-  return <main className="container mx-auto p-8">{renderContent()}</main>;
+  return (
+    <>
+      <Navbar
+        links={[
+          { href: "/home", title: "Home" },
+          { href: "/consultar-moedas", title: "Meu Saldo" },
+          { href: "/pagar-moedas", title: "Pagar Moedas" },
+          { href: "/vantagens-cadastro", title: "Cadastrar Vantagens" },
+          { href: "/vantagens-listar", title: "Ver Vantagens" },
+
+          { href: "/logout", title: "Sair" },
+        ]}
+        className=""
+      ></Navbar>
+      <main className="container mx-auto p-8">{renderContent()}</main>
+    </>
+  );
 }

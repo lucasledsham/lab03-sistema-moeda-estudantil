@@ -10,6 +10,8 @@ export default function page() {
           { href: "/home", title: "Home" },
           { href: "/consultar-moedas", title: "Meu Saldo" },
           { href: "/pagar-moedas", title: "Pagar Moedas" },
+          { href: "/vantagens-cadastro", title: "Cadastrar Vantagens" },
+          { href: "/vantagens-listar", title: "Ver Vantagens" },
 
           { href: "/logout", title: "Sair" },
         ]}

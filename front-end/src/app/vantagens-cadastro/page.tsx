@@ -8,7 +8,6 @@ interface User {
   id: string;
   name: string;
 }
-
 export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

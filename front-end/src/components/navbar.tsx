@@ -42,7 +42,7 @@ export default function Navbar({
                 {links.map((link, i) => (
                   <li key={`NavbarLink-${i}`}>
                     <Button
-                      className="h-full max-w-24 text-wrap text-center"
+                      className="h-full max-w-32 text-wrap text-center"
                       asChild
                       variant={"ghost"}
                     >

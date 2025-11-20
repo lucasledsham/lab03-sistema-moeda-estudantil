@@ -20,17 +20,21 @@ interface Benefit {
 interface BenefitTableProps {
   benefits: Benefit[];
   onViewDetails: (benefit: Benefit) => void;
+  // Nova propriedade para a função de compra
+  onBuyBenefit: (benefit: Benefit) => Promise<void>;
 }
 
 const PLACEHOLDER_URL = "/Placeholder.png";
 export default function BenefitTable({
   benefits,
   onViewDetails,
+  onBuyBenefit, // Recebemos a nova função
 }: BenefitTableProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {benefits.map((benefit) => (
         <Card key={benefit.id} className="flex flex-col">
+          {/* ... CardHeader e CardContent (sem alteração) */}
           <CardHeader className="p-0">
             <div className="aspect-video relative w-full">
               <Image
@@ -66,11 +70,11 @@ export default function BenefitTable({
               </Button>
 
               <Button
-                variant="outline"
+                variant="default" // Alterado para 'default' para dar destaque ao botão de compra
                 size="icon"
-                disabled
-                title="Em breve"
-                className="cursor-not-allowed"
+                // Removemos 'disabled' e 'cursor-not-allowed'
+                // Chamamos a função onBuyBenefit
+                onClick={() => onBuyBenefit(benefit)}
               >
                 <CircleDollarSign className="h-4 w-4" />
                 <span className="sr-only">Comprar</span>

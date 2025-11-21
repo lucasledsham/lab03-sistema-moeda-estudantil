@@ -36,9 +36,9 @@ export default function BenefitTable({
               <Image
                 src={benefit.imageUrl || PLACEHOLDER_URL}
                 alt={benefit.description.substring(0, 30)}
-                layout="fill"
-                objectFit="cover"
-                className="rounded-t-lg"
+                fill
+                className="rounded-t-lg object-cover"
+                unoptimized={benefit.imageUrl.startsWith("data:")}
                 onError={(e) => (e.currentTarget.src = PLACEHOLDER_URL)}
               />
             </div>

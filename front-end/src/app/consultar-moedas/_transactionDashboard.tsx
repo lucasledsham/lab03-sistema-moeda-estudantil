@@ -118,21 +118,6 @@ export function TransactionDashboard() {
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 space-y-6">
-      {(isBalanceMock || isTransactionsMock) && (
-        <Card className="bg-yellow-50 border-yellow-300">
-          <CardContent className="p-4 flex items-center space-x-3">
-            <AlertTriangle className="text-yellow-600 h-5 w-5" />
-            <div>
-              <p className="font-semibold text-yellow-800">Aviso: Dados Simulados Parciais</p>
-              <p className="text-sm text-yellow-700">
-                {isBalanceMock && isTransactionsMock && "Saldo e transações em modo simulado."}
-                {isBalanceMock && !isTransactionsMock && "Saldo em modo simulado; transações reais."}
-                {!isBalanceMock && isTransactionsMock && "Saldo real; transações em modo simulado."}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
       {/* 1. Card do Saldo */}
       <Card>
         <CardHeader>

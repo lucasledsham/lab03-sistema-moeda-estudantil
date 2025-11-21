@@ -11,44 +11,29 @@ import {
 } from "@/components/ui/dialog";
 import Navbar from "@/components/navbar";
 
-const PLACEHOLDER_URL = "/Placeholder.png";
-interface Benefit {
+const API_URL = "http://localhost:9090/benefits";
+const PLACEHOLDER_URL = "/placeholder.png";
+
+type BenefitResponse = {
+  id?: string;
+  description: string;
+  cost: number | string;
+  imageBase64: string | null;
+  contentType: string | null;
+};
+
+type BenefitCard = {
   id: string;
   description: string;
   cost: number;
   imageUrl: string;
-}
-
-const MOCK_BENEFITS: Benefit[] = [
-  {
-    id: "mock-1",
-    description:
-      "Este é um benefício de exemplo. A descrição pode ser bem longa para testar o modal.",
-    cost: 100,
-    imageUrl: PLACEHOLDER_URL,
-  },
-  {
-    id: "mock-2",
-    description: "Outro benefício! Este é o segundo item da lista de mock.",
-    cost: 50,
-    imageUrl: PLACEHOLDER_URL,
-  },
-  {
-    id: "mock-3",
-    description: "Apenas mais um para preencher a grade.",
-    cost: 75,
-    imageUrl: PLACEHOLDER_URL,
-  },
-];
-
-//TODO: Ajustar a URL da API
-const API_URL = "http://localhost:9090/benefits";
+};
 
 export default function VantagensListarPage() {
-  const [benefits, setBenefits] = useState<Benefit[]>([]);
+  const [benefits, setBenefits] = useState<BenefitCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedBenefit, setSelectedBenefit] = useState<Benefit | null>(null);
+  const [selectedBenefit, setSelectedBenefit] = useState<BenefitCard | null>(null);
 
   useEffect(() => {
     async function fetchBenefits() {
@@ -56,23 +41,39 @@ export default function VantagensListarPage() {
         setLoading(true);
         setError(null);
 
+        const token = localStorage.getItem("authToken");
+        const headersObj: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+
         const response = await fetch(API_URL, {
-          credentials: "include",
+          headers: headersObj,
         });
 
         if (!response.ok) {
           throw new Error(`Falha ao buscar dados (status: ${response.status})`);
         }
 
-        const data: Benefit[] = await response.json();
-        setBenefits(data);
+        const data: BenefitResponse[] = await response.json();
+        const normalized = data.map((benefit, index) => {
+          const hasImage = Boolean(benefit.imageBase64 && benefit.imageBase64.length > 0);
+          const mimeType = benefit.contentType || "image/jpeg";
+          const imageUrl = hasImage
+            ? `data:${mimeType};base64,${benefit.imageBase64}`
+            : PLACEHOLDER_URL;
+
+          return {
+            id: benefit.id ?? `benefit-${index}`,
+            description: benefit.description,
+            cost: typeof benefit.cost === "string" ? Number(benefit.cost) : benefit.cost,
+            imageUrl,
+          } satisfies BenefitCard;
+        });
+
+        setBenefits(normalized);
       } catch (err: any) {
         console.error(err);
-
         setError(
-          "Não foi possível conectar ao servidor. Carregando dados de exemplo."
+          err.message || "Não foi possível carregar as vantagens do servidor."
         );
-        setBenefits(MOCK_BENEFITS);
       } finally {
         setLoading(false);
       }
@@ -102,7 +103,11 @@ export default function VantagensListarPage() {
 
         {loading && <p className="text-center">Carregando vantagens...</p>}
 
-        {error && <p className="text-center text-red-600 mb-4"></p>}
+        {error && (
+          <p className="text-center text-red-600 mb-4">
+            <strong>Erro:</strong> {error}
+          </p>
+        )}
 
         {!loading && benefits.length === 0 && (
           <p className="text-center text-gray-500">
@@ -134,11 +139,11 @@ export default function VantagensListarPage() {
               <div className="space-y-4">
                 <div className="aspect-video relative w-full">
                   <Image
-                    src={selectedBenefit.imageUrl || PLACEHOLDER_URL}
+                    src={selectedBenefit.imageUrl}
                     alt="Imagem da vantagem"
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-lg"
+                    fill
+                    className="rounded-lg object-cover"
+                    unoptimized={selectedBenefit.imageUrl.startsWith("data:")}
                     onError={(e) => (e.currentTarget.src = PLACEHOLDER_URL)}
                   />
                 </div>

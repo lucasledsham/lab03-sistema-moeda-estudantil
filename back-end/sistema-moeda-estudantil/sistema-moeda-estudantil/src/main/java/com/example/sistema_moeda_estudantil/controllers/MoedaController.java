@@ -2,6 +2,8 @@ package com.example.sistema_moeda_estudantil.controllers;
 
 import com.example.sistema_moeda_estudantil.dtos.BalanceDTO;
 import com.example.sistema_moeda_estudantil.dtos.EnviarMoedasDTO;
+import com.example.sistema_moeda_estudantil.dtos.ErrorDTO;
+import com.example.sistema_moeda_estudantil.dtos.PaymentResultDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.example.sistema_moeda_estudantil.models.User;
@@ -71,6 +73,3 @@ public class MoedaController {
     }
 
 }
-
-record PaymentResultDTO(float newBalance) {}
-record ErrorDTO(String error) {}

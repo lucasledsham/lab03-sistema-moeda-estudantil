@@ -38,7 +38,7 @@ public class MoedaController {
     @GetMapping("/users")
     public ResponseEntity<?> consultarAlunos(){
         UserRole userRole = UserRole.STUDENT;
-        List<User> listaAlunos = userRepository.findAllByUserRole(userRole);
+        List<User> listaAlunos = userRepository.findAllByRole(userRole);
 
         return ResponseEntity.ok(listaAlunos);
     }

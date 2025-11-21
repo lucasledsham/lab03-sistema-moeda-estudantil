@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
     User findByEmail(String email);
-    List<User> findAllByUserRole(UserRole userRole);
+    List<User> findAllByRole(UserRole userRole);
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Search, CircleDollarSign } from "lucide-react";
+import { Search, CircleDollarSign, Loader2 } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -20,12 +20,18 @@ interface Benefit {
 interface BenefitTableProps {
   benefits: Benefit[];
   onViewDetails: (benefit: Benefit) => void;
+  onBuyBenefit: (benefit: Benefit) => void;
+  purchasingBenefitId?: string | null;
+  canPurchase?: boolean;
 }
 
 const PLACEHOLDER_URL = "/Placeholder.png";
 export default function BenefitTable({
   benefits,
   onViewDetails,
+  onBuyBenefit,
+  purchasingBenefitId,
+  canPurchase = true,
 }: BenefitTableProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -66,13 +72,21 @@ export default function BenefitTable({
               </Button>
 
               <Button
-                variant="outline"
+                variant="default"
                 size="icon"
-                disabled
-                title="Em breve"
-                className="cursor-not-allowed"
+                disabled={!canPurchase || purchasingBenefitId === benefit.id}
+                onClick={() => onBuyBenefit(benefit)}
+                title={
+                  !canPurchase
+                    ? "Carregando dados para compra"
+                    : "Comprar benefício"
+                }
               >
-                <CircleDollarSign className="h-4 w-4" />
+                {purchasingBenefitId === benefit.id ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <CircleDollarSign className="h-4 w-4" />
+                )}
                 <span className="sr-only">Comprar</span>
               </Button>
             </div>

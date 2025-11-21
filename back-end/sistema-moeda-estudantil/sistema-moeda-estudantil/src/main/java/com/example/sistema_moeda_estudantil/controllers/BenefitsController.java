@@ -1,8 +1,11 @@
 package com.example.sistema_moeda_estudantil.controllers;
 
 import com.example.sistema_moeda_estudantil.dtos.BenefitDTO;
+import com.example.sistema_moeda_estudantil.dtos.PurchaseDTO;
 import com.example.sistema_moeda_estudantil.models.Benefit;
+import com.example.sistema_moeda_estudantil.models.User;
 import com.example.sistema_moeda_estudantil.repositories.BenefitRepository;
+import com.example.sistema_moeda_estudantil.repositories.UserRepository;
 import com.example.sistema_moeda_estudantil.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.bson.types.Binary;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.Base64;
 import java.util.List;
@@ -22,6 +26,7 @@ import java.util.List;
 public class BenefitsController {
     private final UserService userService;
     private final BenefitRepository benefitRepository;
+    private final UserRepository userRepository;
 
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<?> sendBenefit(
@@ -56,8 +61,8 @@ public class BenefitsController {
 
     @GetMapping
     public ResponseEntity<List<BenefitDTO>> getAllBenefitsByUserId() {
-        String userId = userService.getSenderUser().getId();
-        List<Benefit> benefits = benefitRepository.findAllByUserId(userId);
+//        String userId = userService.getSenderUser().getId();
+        List<Benefit> benefits = benefitRepository.findAll();
         List<BenefitDTO> response = benefits.stream().map(this::mapToDto).toList();
         return ResponseEntity.ok(response);
     }
@@ -77,6 +82,27 @@ public class BenefitsController {
         if (benefit.getImage() != null) {
             base64 = Base64.getEncoder().encodeToString(benefit.getImage().getData());
         }
-        return new BenefitDTO(benefit.getDescription(), (long) benefit.getCost(), base64, benefit.getContentType());
+    return new BenefitDTO(
+        benefit.getId(),
+        benefit.getDescription(),
+        (long) benefit.getCost(),
+        base64,
+        benefit.getContentType()
+    );
+    }
+
+    @PostMapping("/purchase/{benefitId}")
+    public ResponseEntity<?> purchaseBenefitAndGenerateCoupon(@PathVariable String benefitId, @RequestParam long cost) {
+        User user = userService.getSenderUser();
+        user.setCurrency(user.getCurrency() - cost);
+        userRepository.save(user);
+
+        final String coupon = generateCouponCode();
+
+        return ResponseEntity.ok(new PurchaseDTO(coupon));
+    }
+
+    private String generateCouponCode() {
+        return RandomStringUtils.random(6, true, true); // letras + números
     }
 }

@@ -18,8 +18,11 @@ export default function Page() {
       try {
         setError(null);
 
-        //TODO: Ajustar a URL para o endpoint correto
-        const response = await fetch("http://localhost:9090/auth/me");
+        const token = localStorage.getItem("authToken");
+        const headersObj: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+        const response = await fetch("http://localhost:9090/user", {
+          headers: headersObj,
+        });
 
         if (!response.ok) {
           throw new Error("Falha ao carregar dados do usuário.");
@@ -52,24 +55,27 @@ export default function Page() {
     console.log("Enviando como usuário:", user.name);
 
     const formData = new FormData();
-    formData.append("userId", user.id);
-    const benefitsMetadata = values.benefits.map((benefit) => ({
-      description: benefit.description,
-      cost: benefit.cost,
-    }));
-    formData.append("benefitsData", JSON.stringify(benefitsMetadata));
-    values.benefits.forEach((benefit) => {
-      if (benefit.image instanceof File) {
-        formData.append("images", benefit.image);
-      }
-    });
+    const benefit = {
+      description: values.benefits[0].description,
+      cost: values.benefits[0].cost,
+    };
+    formData.append("benefit", JSON.stringify(benefit));
+    if (values.benefits[0].image instanceof File) {
+      formData.append("image", values.benefits[0].image);
+    }
 
     //TODO: Ajustar a URL para o endpoint correto
     try {
-      const response = await fetch("http://localhost:9090/benefits", {
+      const token = localStorage.getItem("authToken");
+      const headersObj: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+      const fetchOptions: RequestInit = {
         method: "POST",
         body: formData,
-      });
+      };
+      if (token) {
+        fetchOptions.headers = headersObj;
+      }
+      const response = await fetch("http://localhost:9090/benefits", fetchOptions);
 
       if (!response.ok) {
         const errorData = await response.json();

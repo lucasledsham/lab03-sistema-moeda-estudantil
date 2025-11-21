@@ -1,5 +1,7 @@
 "use client";
 
+import { PaymentPayload } from "@/lib/schemas/paymentSchemas";
+
 import React, { useEffect, useState } from "react";
 import { useForm, type FieldErrors } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -80,9 +82,7 @@ export function PaymentForm() {
   const [studentPopoverOpen, setStudentPopoverOpen] = useState(false); // controla popover fora do render prop
   const [isMockData, setIsMockData] = useState(false);
 
-  type FormValues = z.infer<typeof paymentPayloadSchema>;
-
-  const form = useForm<FormValues>({
+  const form = useForm<PaymentPayload>({
     resolver: zodResolver(paymentPayloadSchema),
     defaultValues: { recipientId: "", amount: 0, message: "" },
   });
@@ -136,7 +136,7 @@ export function PaymentForm() {
     fetchData();
   }, []);
 
-  const sendPaymentEmails = async (paymentData: FormValues, receiver: User) => {
+  const sendPaymentEmails = async (paymentData: PaymentPayload, receiver: User) => {
     if (!currentUser) return;
 
     const time = new Date().toLocaleString("pt-BR");
@@ -187,7 +187,7 @@ export function PaymentForm() {
     });
   };
 
-  async function onSubmit(values: FormValues) {
+  async function onSubmit(values: PaymentPayload) {
     setIsSubmitting(true);
 
     if (!currentUser || values.amount > currentUser.balance) {
@@ -244,7 +244,7 @@ export function PaymentForm() {
     }
   }
 
-  function onInvalid(errors: FieldErrors<FormValues>) {
+  function onInvalid(errors: FieldErrors<PaymentPayload>) {
     console.error("Erros de validação:", errors);
     toast.error("Campos inválidos", {
       description: "Por favor, corrija os campos em vermelho.",

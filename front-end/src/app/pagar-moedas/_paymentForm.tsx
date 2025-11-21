@@ -61,9 +61,9 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 const API_BASE_URL = "http://localhost:9090";
-const CURRENT_USER_API_ROUTE = `${API_BASE_URL}/currentUser`;
-const USERS_API_ROUTE = `${API_BASE_URL}/users`;
-const PAYMENT_API_ROUTE = `${API_BASE_URL}/payment`;
+const CURRENT_USER_API_ROUTE = `${API_BASE_URL}/moeda/balance`; 
+const USERS_API_ROUTE = `${API_BASE_URL}/moeda/users`;
+const PAYMENT_API_ROUTE = `${API_BASE_URL}/moeda/payment`;
 
 function formatNumber(amount: number) {
   return new Intl.NumberFormat("pt-BR", {
@@ -77,6 +77,7 @@ export function PaymentForm() {
   const [students, setStudents] = useState<User[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [studentPopoverOpen, setStudentPopoverOpen] = useState(false); // controla popover fora do render prop
   const [isMockData, setIsMockData] = useState(false);
 
   type FormValues = z.infer<typeof paymentPayloadSchema>;
@@ -90,22 +91,33 @@ export function PaymentForm() {
     setIsLoadingData(true);
     setIsMockData(false);
     try {
-      const [currentUserRes, usersRes] = await Promise.all([
-        fetch(CURRENT_USER_API_ROUTE),
-        fetch(USERS_API_ROUTE),
+      const token = localStorage.getItem("authToken");
+      const headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+
+      const [balanceRes, usersRes] = await Promise.all([
+        fetch(CURRENT_USER_API_ROUTE, { headers }),
+        fetch(USERS_API_ROUTE, { headers }),
       ]);
 
-      if (!currentUserRes.ok || !usersRes.ok) {
+      if (!balanceRes.ok || !usersRes.ok) {
         throw new Error("Falha ao buscar dados da API.");
       }
 
-      const currentUserData = await currentUserRes.json();
+      const balanceData = await balanceRes.json();
       const usersData = await usersRes.json();
-
-      const validatedCurrentUser = currentUserSchema.parse(currentUserData);
+      // Backend balance agora retorna { balance }, precisamos compor CurrentUser mínimo
       const validatedUsers = userListSchema.parse(usersData);
+      const balanceValue = balanceData.balance as number | undefined;
+      const previous = currentUser;
+      const composedUser: CurrentUser = {
+        id: previous?.id || "logged-user",
+        name: previous?.name || "Usuário Logado",
+        email: previous?.email || "email@desconhecido",
+        role: previous?.role || "STUDENT",
+        balance: balanceValue ?? 0,
+      };
 
-      setCurrentUser(validatedCurrentUser);
+      setCurrentUser(composedUser);
       setStudents(validatedUsers.filter((user) => user.role === "STUDENT"));
     } catch (err) {
       console.warn("API falhou. Carregando dados mockados.", err);
@@ -188,9 +200,13 @@ export function PaymentForm() {
     }
 
     try {
+      const token = localStorage.getItem("authToken");
       const response = await fetch(PAYMENT_API_ROUTE, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify(values),
       });
 
@@ -208,7 +224,16 @@ export function PaymentForm() {
       }
 
       form.reset();
-      fetchData();
+      try {
+        const resJson = await response.json();
+        if (resJson?.newBalance !== undefined && currentUser) {
+          setCurrentUser({ ...currentUser, balance: resJson.newBalance });
+        } else {
+          fetchData();
+        }
+      } catch {
+        fetchData();
+      }
     } catch (error) {
       toast.error("Erro no Pagamento", {
         description:
@@ -281,64 +306,63 @@ export function PaymentForm() {
                 <FormField
                   control={form.control}
                   name="recipientId"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Destinatário</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              role="combobox"
-                              className={cn(
-                                "w-full justify-between",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value
-                                ? students.find(
-                                    (student) => student.id === field.value
-                                  )?.name
-                                : "Selecione um aluno"}
-                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-[--radix-popvert-trigger-width] p-0">
-                          <Command>
-                            <CommandInput placeholder="Procurar aluno..." />
-                            <CommandList>
-                              <CommandEmpty>
-                                Nenhum aluno encontrado.
-                              </CommandEmpty>
-                              <CommandGroup>
-                                {students.map((student) => (
-                                  <CommandItem
-                                    value={student.name}
-                                    key={student.id}
-                                    onSelect={() => {
-                                      form.setValue("recipientId", student.id);
-                                    }}
-                                  >
-                                    <Check
-                                      className={cn(
-                                        "mr-2 h-4 w-4",
-                                        student.id === field.value
-                                          ? "opacity-100"
-                                          : "opacity-0"
-                                      )}
-                                    />
-                                    {student.name}
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    const selectedStudent = students.find(s => s.id === field.value);
+                    return (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>Destinatário</FormLabel>
+                        <Popover open={studentPopoverOpen} onOpenChange={setStudentPopoverOpen}>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={studentPopoverOpen}
+                                className={cn(
+                                  "w-full justify-between",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {selectedStudent ? selectedStudent.name : "Selecione um aluno"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-[--radix-popvert-trigger-width] p-0">
+                            <Command>
+                              <CommandInput placeholder="Procurar aluno..." />
+                              <CommandList>
+                                <CommandEmpty>Nenhum aluno encontrado.</CommandEmpty>
+                                <CommandGroup>
+                                  {students.map((student) => (
+                                    <CommandItem
+                                      value={student.name}
+                                      key={student.id}
+                                      onSelect={() => {
+                                        form.setValue("recipientId", student.id, { shouldValidate: true, shouldDirty: true });
+                                        setStudentPopoverOpen(false);
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          student.id === field.value
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {student.name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
 
                 {/* Campo 2: Quantidade */}

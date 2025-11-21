@@ -60,49 +60,50 @@ export function TransactionDashboard() {
   const [balance, setBalance] = useState<Balance | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isMockData, setIsMockData] = useState(false);
+  const [isBalanceMock, setIsBalanceMock] = useState(false);
+  const [isTransactionsMock, setIsTransactionsMock] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      setIsMockData(false);
+      setIsBalanceMock(false);
+      setIsTransactionsMock(false);
+
+      const token = localStorage.getItem("authToken");
+      const headersObj: HeadersInit = token
+        ? { Authorization: `Bearer ${token}` }
+        : {};
+
       try {
-        const token = localStorage.getItem("authToken");
-        const headersObj: HeadersInit = token
-          ? { Authorization: `Bearer ${token}` }
-          : {};
-
-        const [balanceRes, transactionsRes] = await Promise.all([
-          fetch(BALANCE_API_ROUTE, { headers: headersObj }),
-          fetch(TRANSACTIONS_API_ROUTE, { headers: headersObj }),
-        ]);
-
-        if (!balanceRes.ok || !transactionsRes.ok) {
-          throw new Error("Falha de rede ou resposta não-OK da API.");
-        }
-
+        const balanceRes = await fetch(BALANCE_API_ROUTE, {
+          headers: headersObj,
+        });
+        if (!balanceRes.ok) throw new Error("Saldo: resposta não-OK");
         const balanceData = await balanceRes.json();
-        const transactionsData = await transactionsRes.json();
-
         const validatedBalance = balanceSchema.parse(balanceData);
-        const validatedTransactions =
-          transactionListSchema.parse(transactionsData);
-
         setBalance(validatedBalance);
+      } catch (e) {
+        console.warn("Falha ao buscar saldo. Usando mock.", e);
+        setBalance(MOCK_BALANCE);
+        setIsBalanceMock(true);
+      }
+
+      try {
+        const txRes = await fetch(TRANSACTIONS_API_ROUTE, {
+          headers: headersObj,
+        });
+        if (!txRes.ok) throw new Error("Transações: resposta não-OK");
+        const txData = await txRes.json();
+        const validatedTransactions = transactionListSchema.parse(txData);
         setTransactions(
           validatedTransactions.sort(
             (a, b) => b.date.getTime() - a.date.getTime()
           )
         );
-      } catch (err) {
-        console.warn(
-          "API falhou. Carregando dados mockados como fallback.",
-          err
-        );
-
-        setBalance(MOCK_BALANCE);
+      } catch (e) {
+        console.warn("Falha ao buscar transações. Usando mock.", e);
         setTransactions(MOCK_TRANSACTIONS);
-        setIsMockData(true);
+        setIsTransactionsMock(true);
       } finally {
         setIsLoading(false);
       }
@@ -117,17 +118,16 @@ export function TransactionDashboard() {
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 space-y-6">
-      {isMockData && (
+      {(isBalanceMock || isTransactionsMock) && (
         <Card className="bg-yellow-50 border-yellow-300">
           <CardContent className="p-4 flex items-center space-x-3">
             <AlertTriangle className="text-yellow-600 h-5 w-5" />
             <div>
-              <p className="font-semibold text-yellow-800">
-                Aviso: Dados Simulados
-              </p>
+              <p className="font-semibold text-yellow-800">Aviso: Dados Simulados Parciais</p>
               <p className="text-sm text-yellow-700">
-                Não foi possível conectar à API. Estes dados são apenas para
-                visualização.
+                {isBalanceMock && isTransactionsMock && "Saldo e transações em modo simulado."}
+                {isBalanceMock && !isTransactionsMock && "Saldo em modo simulado; transações reais."}
+                {!isBalanceMock && isTransactionsMock && "Saldo real; transações em modo simulado."}
               </p>
             </div>
           </CardContent>

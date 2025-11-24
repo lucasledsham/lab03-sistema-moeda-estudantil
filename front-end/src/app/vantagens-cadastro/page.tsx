@@ -3,23 +3,28 @@
 import { useState, useEffect } from "react";
 import BenefitForm, { BenefitsFormValues } from "./_form";
 import Navbar from "@/components/navbar";
+import { toast } from "sonner";
 
 interface User {
   id: string;
   name: string;
 }
+
 export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
+
   useEffect(() => {
     async function fetchUser() {
       try {
         setError(null);
 
         const token = localStorage.getItem("authToken");
-        const headersObj: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+        const headersObj: HeadersInit = token
+          ? { Authorization: `Bearer ${token}` }
+          : {};
         const response = await fetch("http://localhost:9090/user", {
           headers: headersObj,
         });
@@ -43,11 +48,16 @@ export default function Page() {
 
   async function handleSubmit(values: BenefitsFormValues) {
     if (!user) {
-      setError(
-        "Não foi possível identificar o usuário. Tente recarregar a página."
-      );
+      const errorMessage =
+        "Não foi possível identificar o usuário. Tente recarregar a página.";
+      setError(errorMessage);
+      toast.error("Acesso Negado", { description: errorMessage });
       return;
     }
+
+    const submitToastId = toast.loading(
+      "Enviando benefícios para o servidor..."
+    );
 
     setIsSubmitting(true);
     setError(null);
@@ -64,10 +74,11 @@ export default function Page() {
       formData.append("image", values.benefits[0].image);
     }
 
-    //TODO: Ajustar a URL para o endpoint correto
     try {
       const token = localStorage.getItem("authToken");
-      const headersObj: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+      const headersObj: HeadersInit = token
+        ? { Authorization: `Bearer ${token}` }
+        : {};
       const fetchOptions: RequestInit = {
         method: "POST",
         body: formData,
@@ -75,24 +86,44 @@ export default function Page() {
       if (token) {
         fetchOptions.headers = headersObj;
       }
-      const response = await fetch("http://localhost:9090/benefits", fetchOptions);
+      const response = await fetch(
+        "http://localhost:9090/benefits",
+        fetchOptions
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
+        // ⬅️ Toast de FALHA: API retornou erro (e.g., 400, 500)
         throw new Error(errorData.message || "Falha ao enviar benefícios");
       }
 
       const result = await response.json();
       console.log("Sucesso:", result);
+
+      // ⬅️ Toast de SUCESSO: Requisição 2xx
+      toast.dismiss(submitToastId); // Remove o toast de loading
+      toast.success("Sucesso", {
+        description: "Benefício cadastrado com sucesso!",
+        duration: 5000,
+      });
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Ocorreu um erro inesperado.");
+      const errorMessage = err.message || "Ocorreu um erro inesperado.";
+      setError(errorMessage);
+
+      toast.dismiss(submitToastId); // Remove o toast de loading
+      // ⬅️ Toast de FALHA: Erro de rede ou erro lançado acima
+      toast.error("Falha no Cadastro", {
+        description: errorMessage,
+        duration: 5000,
+      });
     } finally {
       setIsSubmitting(false);
     }
   }
 
   const renderContent = () => {
+    // ... (restante da renderização - sem alteração)
     if (isLoadingUser) {
       return <p className="text-center">Carregando dados do usuário...</p>;
     }
@@ -109,11 +140,6 @@ export default function Page() {
       return (
         <>
           <BenefitForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
-          {error && (
-            <p className="mt-4 text-red-600">
-              <strong>Erro:</strong> {error}
-            </p>
-          )}
         </>
       );
     }
@@ -131,7 +157,7 @@ export default function Page() {
           { href: "/vantagens-cadastro", title: "Cadastrar Vantagens" },
           { href: "/vantagens-listar", title: "Ver Vantagens" },
 
-          { href: "/logout", title: "Sair" },
+          { href: "/login", title: "Sair" },
         ]}
         className=""
       ></Navbar>

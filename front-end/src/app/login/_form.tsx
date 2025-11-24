@@ -22,8 +22,6 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-// Removido uso incorreto de <head>; use metadata ou next/head se necessário.
-
 const formSchema = z.object({
   email: z.string().email("E-mail inválido"),
   password: z.string().min(1, "Senha obrigatória"),
@@ -73,6 +71,7 @@ export default function LoginForm() {
           description: "Redirecionando...",
           duration: 2500,
         });
+
         // Função de navegação robusta
         const navigateToHome = () => {
           try {

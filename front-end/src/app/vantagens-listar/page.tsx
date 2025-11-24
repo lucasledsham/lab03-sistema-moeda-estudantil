@@ -49,10 +49,14 @@ export default function VantagensListarPage() {
   const [benefits, setBenefits] = useState<BenefitCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedBenefit, setSelectedBenefit] = useState<BenefitCard | null>(null);
+  const [selectedBenefit, setSelectedBenefit] = useState<BenefitCard | null>(
+    null
+  );
   const [userBalance, setUserBalance] = useState(0);
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [processingBenefitId, setProcessingBenefitId] = useState<string | null>(null);
+  const [processingBenefitId, setProcessingBenefitId] = useState<string | null>(
+    null
+  );
 
   const fetchBenefits = useCallback(async () => {
     try {
@@ -75,18 +79,23 @@ export default function VantagensListarPage() {
             return null;
           }
 
-        const hasImage = Boolean(benefit.imageBase64 && benefit.imageBase64.length > 0);
-        const mimeType = benefit.contentType || "image/jpeg";
-        const imageUrl = hasImage
-          ? `data:${mimeType};base64,${benefit.imageBase64}`
-          : PLACEHOLDER_URL;
+          const hasImage = Boolean(
+            benefit.imageBase64 && benefit.imageBase64.length > 0
+          );
+          const mimeType = benefit.contentType || "image/jpeg";
+          const imageUrl = hasImage
+            ? `data:${mimeType};base64,${benefit.imageBase64}`
+            : PLACEHOLDER_URL;
 
-        return {
-          id: benefit.id,
-          description: benefit.description,
-          cost: typeof benefit.cost === "string" ? Number(benefit.cost) : benefit.cost,
-          imageUrl,
-        } satisfies BenefitCard;
+          return {
+            id: benefit.id,
+            description: benefit.description,
+            cost:
+              typeof benefit.cost === "string"
+                ? Number(benefit.cost)
+                : benefit.cost,
+            imageUrl,
+          } satisfies BenefitCard;
         })
         .filter((benefit): benefit is BenefitCard => benefit !== null);
 
@@ -156,7 +165,8 @@ export default function VantagensListarPage() {
 
       if (!userEmail) {
         toast.warning("E-mail do usuário ausente", {
-          description: "Não foi possível identificar seu e-mail para enviar o cupom.",
+          description:
+            "Não foi possível identificar seu e-mail para enviar o cupom.",
         });
         return;
       }
@@ -170,7 +180,7 @@ export default function VantagensListarPage() {
         const response = await fetch(
           `${PURCHASE_API_URL}/${benefit.id}?cost=${benefit.cost}`,
           {
-          method: "POST",
+            method: "POST",
             headers: {
               ...getAuthHeaders(),
             },
@@ -180,7 +190,8 @@ export default function VantagensListarPage() {
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(
-            errorData.message || `Falha na transação (status: ${response.status})`
+            errorData.message ||
+              `Falha na transação (status: ${response.status})`
           );
         }
 
@@ -205,7 +216,9 @@ export default function VantagensListarPage() {
             EMAILJS_CONFIG.PUBLIC_KEY
           );
         } else {
-          console.warn("Configuração do EmailJS ausente. Pulando envio de e-mail.");
+          console.warn(
+            "Configuração do EmailJS ausente. Pulando envio de e-mail."
+          );
         }
 
         toast.success("Compra concluída!", {
@@ -246,7 +259,7 @@ export default function VantagensListarPage() {
           { href: "/vantagens-cadastro", title: "Cadastrar Vantagens" },
           { href: "/vantagens-listar", title: "Ver Vantagens" },
 
-          { href: "/logout", title: "Sair" },
+          { href: "/login", title: "Sair" },
         ]}
         className=""
       ></Navbar>

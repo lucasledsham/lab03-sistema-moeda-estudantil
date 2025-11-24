@@ -13,7 +13,7 @@ export default function page() {
           { href: "/vantagens-cadastro", title: "Cadastrar Vantagens" },
           { href: "/vantagens-listar", title: "Ver Vantagens" },
 
-          { href: "/logout", title: "Sair" },
+          { href: "/login", title: "Sair" },
         ]}
         className=""
       ></Navbar>

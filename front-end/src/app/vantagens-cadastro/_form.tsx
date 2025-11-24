@@ -22,6 +22,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+
 const createBenefitSchema = benefit.omit({ id: true }).extend({
   cost: z.coerce.number().min(1, "O custo deve ser pelo menos 1"),
 });

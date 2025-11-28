@@ -42,14 +42,17 @@
 - [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [Arquitetura](#-arquitetura)
 - [Instalação e Execução](#-instalação-e-execução)
+- [Deploy](#-deploy)
+- [Estrutura de Pastas](#-estrutura-de-pastas)
+- [Autores](#-autores)
+- [Agradecimentos](#-agradecimentos)
+- [Licenca](#-licenca)
 
 ---
 
 # 🔗 **Links Úteis**
 
 * 🌐 **Aplicação Web:** _adicione aqui_
-* 📖 **Documentação da API:** _adicione aqui_
-* 📱 **Protótipo (Figma):** _adicione aqui_
 
 ---
 
@@ -144,7 +147,7 @@ Arquitetura cliente–servidor composta por:
 git clone https://github.com/lucasledsham/lab03-sistema-moeda-estudantil.git
 ```
 
-# 🔧 Backend
+## 🔧 Backend
 
 ```bash
 cd lab03-sistema-moeda-estudantil/back-end/sistema-moeda-estudantil
@@ -152,7 +155,7 @@ mvn spring-boot:run
 ```
 
 
-# 💻 Frontend
+## 💻 Frontend
 
 ```bash
 cd frontend
@@ -165,10 +168,9 @@ npm run dev
 Foi utilizado o Ngrok para realizar o deploy da aplicação.
 Link: 
 
-# 📂 **Estrutura de Pastas (Simplificada)**
+# 📂 **Estrutura de Pastas**
 
 ```
-.
 ├── .editorconfig                # ✍️ Padronização de estilo de código.
 ├── .env.example                 # 🧩 Exemplo de TODAS as variáveis necessárias (sem valores sensíveis).
 ├── .gitignore                   # 🧹 Ignora arquivos/pastas não versionadas (.env, node_modules, target, etc.).
@@ -223,3 +225,7 @@ Estudante de Engenharia de Software — PUC Minas
 PUC Minas – Engenharia de Software
 
 Prof. Dr. João Paulo Aramuni
+
+# 📄 **Licença**
+
+Este projeto está sob a licença MIT.

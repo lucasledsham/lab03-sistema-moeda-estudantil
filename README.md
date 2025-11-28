@@ -52,7 +52,7 @@
 
 # 🔗 **Links Úteis**
 
-* 🌐 **Aplicação Web:** _adicione aqui_
+* 🌐 **Aplicação Web:** https://ayaan-hypergenetic-doloris.ngrok-free.dev/login
 
 ---
 
@@ -166,7 +166,7 @@ npm run dev
 # 🚀 **Deploy**
 
 Foi utilizado o Ngrok para realizar o deploy da aplicação.
-Link: 
+Link: https://ayaan-hypergenetic-doloris.ngrok-free.dev/login
 
 # 📂 **Estrutura de Pastas**
 

@@ -1,96 +1,225 @@
-# 💰 EduCoin - Sistema de Mérito Estudantil com Moeda Virtual
+# 🪙 **EduCoin — Sistema de Mérito Estudantil com Moeda Virtual**
 
-## 🧩 Descrição do Projeto
-
-O **EduCoin** tem como objetivo **estimular o reconhecimento do desempenho acadêmico** através da utilização de uma **moeda virtual**.  
-Professores podem distribuir moedas a seus alunos como forma de reconhecimento por bom comportamento, participação ou desempenho, e os alunos podem trocá-las por produtos ou descontos em **empresas parceiras**.
+<a href="https://classroom.github.com/online_ide?assignment_repo_id=99999999&assignment_repo_type=AssignmentRepo"><img src="https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg" width="200"/></a>
+<a href="https://classroom.github.com/open-in-codespaces?assignment_repo_id=99999999"><img src="https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg" width="250"/></a>
 
 ---
 
-## 🚀 Funcionalidades Principais
+> [!NOTE]
+> O **EduCoin** é um sistema de reconhecimento acadêmico baseado em **moeda virtual** distribuída por professores a estudantes, que podem trocá-la por benefícios e produtos em empresas parceiras.
 
-### 👨‍🎓 Alunos
-- Cadastro com informações pessoais (nome, e-mail, CPF, RG, endereço, instituição de ensino e curso);
-- Recebimento de moedas enviadas pelos professores;
-- Notificação por e-mail ao receber moedas;
-- Consulta de extrato e saldo de moedas;
-- Troca de moedas por vantagens (descontos, produtos, benefícios);
-- Recebimento de cupom digital via e-mail com código de validação.
-
-### 👩‍🏫 Professores
-- Pré-cadastrados pela instituição parceira;
-- Cada professor recebe **1.000 moedas por semestre**, acumuláveis;
-- Envio de moedas a alunos com **mensagem obrigatória de reconhecimento**;
-- Consulta de extrato de envio e saldo de moedas;
-- Associação a uma instituição e departamento.
-
-### 🏢 Empresas Parceiras
-- Cadastro com informações da empresa;
-- Cadastro de **vantagens** (produtos, serviços ou descontos) com:
-  - Descrição,
-  - Foto do produto,
-  - Custo em moedas;
-- Recebimento de e-mail de confirmação quando um aluno resgata uma vantagem, incluindo código de validação.
-
-### 🏫 Instituições de Ensino
-- Pré-cadastradas no sistema;
-- Responsáveis por fornecer a lista de professores parceiros.
-
-### 🔐 Autenticação
-- Todos os tipos de usuários (alunos, professores e empresas) possuem **login e senha**;
-- O sistema exige **autenticação** para acessar as funcionalidades.
+<table>
+  <tr>
+    <td width="800px">
+      <div align="justify">
+        O <b>EduCoin</b> promove o engajamento estudantil por meio de um sistema de <i>gamificação acadêmica</i>, onde professores recompensam alunos com moedas digitais — trocáveis por vantagens reais disponibilizadas por empresas. Este README segue um template profissional recomendado pelo <a href="https://github.com/joaopauloaramuni">Prof. Dr. João Paulo Aramuni</a>, assegurando documentação clara, organizada e padronizada.
+      </div>
+    </td>
+    <td>
+      <div>
+        <img src="https://joaopauloaramuni.github.io/image/logo_ES_vertical.png" alt="Logo do Projeto" width="120px"/>
+      </div>
+    </td>
+  </tr>
+</table>
 
 ---
 
-## ⚙️ Tecnologias Utilizadas
+# 🚧 **Status do Projeto**
 
-O projeto foi desenvolvido utilizando tecnologias modernas e bastante utilizadas, garantindo performance e uma boa experiência de usuário.
-
-### 🖥️ Frontend
-- **React** – Biblioteca JavaScript para construção de interfaces dinâmicas e reativas.  
-- **TypeScript** – Superset de JavaScript que adiciona tipagem estática e maior segurança no código.  
-- **Shadcn/UI** – Biblioteca de componentes estilizados e acessíveis, integrada ao Tailwind CSS.  
-- **Tailwind CSS** – Framework utilitário para estilização rápida e responsiva.  
-- **Zod** – Biblioteca de validação de dados e schemas, utilizada em formulários e integração com APIs.  
-- **Lucide Icons** – Conjunto moderno de ícones SVG leves e personalizáveis.
-
-### ⚙️ Backend
-- **Spring Boot** – Framework Java para criação de APIs robustas e escaláveis, com injeção de dependência e configuração simplificada.
-
-### 🗄️ Banco de Dados
-- **MongoDB** – Banco de dados NoSQL orientado a documentos, ideal para armazenar dados flexíveis e de rápida consulta.
+[![Versão](https://img.shields.io/badge/Versão-v1.0.0-blue)]()
+![React](https://img.shields.io/badge/React-Typescript-007ec6?style=for-the-badge&logo=react&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.0+-007ec6?style=for-the-badge&logo=springboot&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-NoSQL-007ec6?style=for-the-badge&logo=mongodb&logoColor=white)
 
 ---
 
-## 📩 Fluxos Principais do Sistema
+# 📚 **Índice**
 
-### 1. Cadastro de Usuários
-- Aluno e empresa realizam cadastro diretamente no sistema.
-- Professores e instituições são pré-cadastrados.
-
-### 2. Distribuição de Moedas
-- Professor seleciona aluno, define quantidade e motivo.
-- Sistema valida saldo e registra a transação.
-- Aluno recebe e-mail de notificação.
-
-### 3. Resgate de Vantagens
-- Aluno escolhe uma vantagem disponível.
-- Sistema verifica saldo e realiza o desconto.
-- Gera um **cupom com código de confirmação**.
-- Envia e-mails ao aluno e à empresa parceira.
+- [Links Úteis](#-links-úteis)
+- [Sobre o Projeto](#-sobre-o-projeto)
+- [Funcionalidades Principais](#-funcionalidades-principais)
+- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [Arquitetura](#-arquitetura)
+- [Instalação e Execução](#-instalação-e-execução)
 
 ---
 
-## 🛠️ Instalação e Execução
+# 🔗 **Links Úteis**
+
+* 🌐 **Aplicação Web:** _adicione aqui_
+* 📖 **Documentação da API:** _adicione aqui_
+* 📱 **Protótipo (Figma):** _adicione aqui_
+
+---
+
+# 📝 **Sobre o Projeto**
+
+O **EduCoin** foi criado para resolver a falta de mecanismos claros de **reconhecimento e incentivo acadêmico** dentro das instituições de ensino.  
+
+Com ele:
+
+- Professores premiam os alunos com moedas virtuais.
+- Alunos podem trocar moedas por benefícios reais.
+- Empresas parceiras ganham visibilidade e tráfego.
+- A instituição incentiva o engajamento de forma moderna.
+
+O sistema é aplicável em escolas, faculdades, cursos livres e treinamentos corporativos.
+
+---
+
+# ✨ **Funcionalidades Principais**
+
+### 👨‍🎓 **Alunos**
+- Cadastro completo  
+- Recebimento de moedas  
+- Notificação por e-mail  
+- Extrato e histórico de moedas  
+- Resgate de vantagens (produtos, serviços, descontos)  
+- Recebimento de cupom com código único  
+
+### 👩‍🏫 **Professores**
+- Pré-cadastrados pela instituição  
+- 1.000 moedas/semestre (acumulativas)  
+- Envio de moedas com mensagem obrigatória  
+- Controle de saldo e extratos  
+
+### 🏢 **Empresas Parceiras**
+- Cadastro da empresa  
+- Cadastro de vantagens (com foto e custo)  
+- Notificação por e-mail quando um cupom é resgatado  
+
+### 🏫 **Instituições**
+- Cadastro prévio  
+- Gestão de professores  
+
+### 🔐 **Autenticação**
+- Login/senha para todos os usuários  
+- Controle de acesso por tipo de perfil  
+
+---
+
+# 🛠 **Tecnologias Utilizadas**
+
+## 💻 Front-end
+- **React**  
+- **TypeScript**  
+- **Shadcn/UI**  
+- **Tailwind CSS**  
+- **Zod**  
+- **Lucide Icons**  
+
+## 🖥 Back-end
+- **Spring Boot (Java)**  
+- API REST com validação e autenticação  
+
+## 🗄 Banco de Dados
+- **MongoDB** (NoSQL)
+
+---
+
+# 🏗 **Arquitetura**
+
+Arquitetura cliente–servidor composta por:
+
+- **Frontend React**  
+- **API REST em Spring Boot**  
+- **MongoDB** como banco de dados documental  
+
+### Fluxo Simplificado
+
+1. Professor envia moedas ao aluno.  
+2. Backend valida saldo e registra transação.  
+3. Email é enviado automaticamente.  
+4. Aluno resgata uma vantagem.  
+5. Empresa recebe código de confirmação do cupom.  
+
+---
+
+# 🔧 **Instalação e Execução**
+
+## Clonar o repositório
 
 ```bash
-# Clonar o repositório
 git clone https://github.com/lucasledsham/lab03-sistema-moeda-estudantil.git
+```
 
-# Acessar o diretório do backend
+# 🔧 Backend
+
+```bash
 cd lab03-sistema-moeda-estudantil/back-end/sistema-moeda-estudantil
-
-# Configurar o arquivo de propriedades
-
-# Compilar e executar o projeto
 mvn spring-boot:run
+```
+
+
+# 💻 Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+# 🚀 **Deploy**
+
+Foi utilizado o Ngrok para realizar o deploy da aplicação.
+Link: 
+
+# 📂 **Estrutura de Pastas (Simplificada)**
+
+```
+.
+├── .editorconfig                # ✍️ Padronização de estilo de código.
+├── .env.example                 # 🧩 Exemplo de TODAS as variáveis necessárias (sem valores sensíveis).
+├── .gitignore                   # 🧹 Ignora arquivos/pastas não versionadas (.env, node_modules, target, etc.).
+├── .vscode/                     # ⚙️ Configurações de ambiente da IDE (opcional).
+├── .github/                     # 🤖 CI/CD (Actions), templates de Issues e Pull Requests.
+├── README.md                    # 📘 Documentação principal do projeto.
+├── CONTRIBUTING.md              # 🤝 Guia de contribuição.
+├── LICENSE                      # ⚖️ Licença do projeto.
+├── docker-compose.yml           # 🐳 Orquestração dos containers (front/back/db/etc).
+│
+├── /frontend                    # 📁 Aplicação Frontend
+│   ├── /src                     # 📂 Código-fonte React
+│   ├── /public                  # 🌐 Arquivos públicos e index.html
+│   ├── package.json             # 📦 Dependências e scripts do projeto
+│
+├── /backend                     # 🔧 API Spring Boot
+│   ├── .env.example             # 🧩 Variáveis de ambiente do Back-end.
+│   │
+│   ├── /src/main/java           # 📂 Código-fonte Java
+│   │   └── /com/exemplo/app
+│   │       ├── /controller      # 🎮 Endpoints REST.
+│   │       ├── /service         # ⚙️ Regras e lógica de negócio.
+│   │       ├── /repository      # 🗄️ Repositórios (JPA/Hibernate).
+│   │       ├── /model           # 🧬 Entidades persistentes (JPA).
+│   │
+│   ├── /src/main/resources      # 📂 Recursos do Spring Boot
+│   │   ├── application.yml         # ⚙️ Configuração principal da aplicação
+│   │   ├── application-dev.yml     # 🧪 Configurações específicas do ambiente de DESENVOLVIMENTO
+│   │   ├── application-prod.yml    # 🚀 Configurações específicas para PRODUÇÃO
+│   │   ├── application-test.yml    # 🧪 Configurações usadas nos testes automatizados
+│   │   ├── /static                # 🌐 Arquivos estáticos (HTML/CSS/JS).
+│   │
+│
+├── /docs                         # 📚 Documentação, arquitetura, modelos C4, Swagger/OpenAPI.
+```
+
+---
+
+# 👤 **Autores**
+
+Guilherme Martini Brina Ferreira
+Estudante de Engenharia de Software — PUC Minas
+
+Lucas Nunes Leal Ledsham
+Estudante de Engenharia de Software — PUC Minas
+
+Thales Eduardo de Carvalho Mattos
+Estudante de Engenharia de Software — PUC Minas
+
+# 🙏 **Agradecimentos**
+
+PUC Minas – Engenharia de Software
+
+Prof. Dr. João Paulo Aramuni

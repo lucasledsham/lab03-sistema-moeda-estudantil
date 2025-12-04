@@ -14,10 +14,9 @@ export const userListSchema = z.array(userSchema);
 
 export const paymentPayloadSchema = z.object({
   recipientId: z.string().min(1, { message: "Selecione um aluno." }),
-  amount: z.coerce
+  amount:z
     .number()
-    .min(0.01, { message: "Valor deve ser maior que 0." })
-    .refine((v) => Number.isFinite(v), { message: "Valor inválido." }),
+    .min(0.01, { message: "Valor deve ser maior que 0." }),
   message: z.string().min(1, { message: "A mensagem é obrigatória." }),
 });
 export const currentUserSchema = userSchema.extend({

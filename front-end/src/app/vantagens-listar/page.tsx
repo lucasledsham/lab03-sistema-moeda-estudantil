@@ -14,6 +14,10 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import emailjs from "@emailjs/browser";
 import EMAILJS_CONFIG from "@/lib/config/configEmailJS";
+// biblioteca do qrcode. biblioteca nativa para javascript, nao react, para ser reconhecido
+// deve ser incluido com comando npm install --save-dev @types/qrcode
+import QRCode from "qrcode";
+
 
 const API_BASE_URL = "http://localhost:9090";
 const BENEFITS_API_URL = `${API_BASE_URL}/benefits`;
@@ -198,6 +202,15 @@ export default function VantagensListarPage() {
         const purchaseData = await response.json().catch(() => ({}));
         const couponCode = purchaseData.coupon ?? "CUPOM-PADRAO-000";
 
+        // QRCode (Mostrar para o proessor)
+        let qrCodeDataUrl = "";
+        try {
+          
+          qrCodeDataUrl = await QRCode.toDataURL(couponCode);
+        } catch (qrError) {
+          console.error("Erro ao gerar QR Code:", qrError);
+        }
+
         if (
           EMAILJS_CONFIG.SERVICE_ID &&
           EMAILJS_CONFIG.TEMPLATE_ID_RECEIVER &&
@@ -210,6 +223,7 @@ export default function VantagensListarPage() {
               to_email: userEmail,
               benefit_name: benefit.description,
               coupon_code: couponCode,
+              qr_code_image: qrCodeDataUrl, //Onde o qr code é incluido no email
               title: "Confirmação de Resgate",
               message: `Aqui está o código do seu cupom: ${couponCode}`,
             },

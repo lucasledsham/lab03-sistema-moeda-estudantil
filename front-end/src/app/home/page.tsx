@@ -1,3 +1,5 @@
+"use client";
+
 import Navbar from "@/components/navbar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Coins } from "lucide-react";

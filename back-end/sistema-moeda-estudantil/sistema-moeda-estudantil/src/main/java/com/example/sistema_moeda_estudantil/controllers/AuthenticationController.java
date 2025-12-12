@@ -3,15 +3,10 @@ package com.example.sistema_moeda_estudantil.controllers;
 import com.example.sistema_moeda_estudantil.dtos.AuthenticationDTO;
 import com.example.sistema_moeda_estudantil.dtos.LoginResponseDTO;
 import com.example.sistema_moeda_estudantil.dtos.RegisterDTO;
-import com.example.sistema_moeda_estudantil.models.User;
-import com.example.sistema_moeda_estudantil.models.UserRole;
-import com.example.sistema_moeda_estudantil.repositories.UserRepository;
-import com.example.sistema_moeda_estudantil.services.TokenService;
+import com.example.sistema_moeda_estudantil.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,42 +20,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthenticationController {
 
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
-    private final UserRepository userRepository;
+    private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public LoginResponseDTO login(@RequestBody AuthenticationDTO loginAuthentication) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(
-                loginAuthentication.email(),
-                loginAuthentication.password());
-
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((User) auth.getPrincipal());
-
-        UserRole userRole = userRepository.findByEmail(loginAuthentication.email()).getRole();
-
-        return new LoginResponseDTO(token, loginAuthentication.email(), userRole);
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody AuthenticationDTO loginAuthentication) {
+        // Toda a lógica de autenticação e token é delegada ao serviço
+        LoginResponseDTO response = authenticationService.login(loginAuthentication);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO register) {
-        if (this.userRepository.findByEmail(register.email()) != null) return ResponseEntity.badRequest().build();
-
-        String encriptedPassword = new BCryptPasswordEncoder().encode(register.password());
-        User newUser = User.builder()
-                .name(register.name())
-                .rg(register.rg())
-                .cpf(register.cpf())
-                .adress(register.adress())
-                .password(encriptedPassword)
-                .role(register.userRole())
-                .email(register.email())
-                .build();
-
-        this.userRepository.save(newUser);
-
-        return ResponseEntity.ok().build();
+        try {
+            // Toda a lógica de validação e salvamento é delegada ao serviço
+            authenticationService.register(register);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            // Lógica de tratamento de erro para usuário duplicado
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
-
 }

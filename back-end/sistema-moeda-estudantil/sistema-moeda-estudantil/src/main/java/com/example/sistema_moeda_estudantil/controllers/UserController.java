@@ -21,6 +21,7 @@ public class UserController {
     public ResponseEntity<?> getLoggedUser(){
         try{
             User user = userService.getSenderUser();
+            // Mapeia a entidade User para o DTO de retorno
             return ResponseEntity.ok(new UserReturnDTO(user.getName(), user.getId(), user.getEmail()));
         }catch(Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

@@ -26,36 +26,47 @@
 
 ## 🧱 3. Arquitetura e Tecnologias Utilizadas
 
-O projeto utiliza uma arquitetura dividida entre backend e frontend, promovendo modularidade, separação de responsabilidades e facilidade de manutenção.
+O projeto utiliza uma arquitetura modular dividida entre **backend** e **frontend**, garantindo separação de responsabilidades, escalabilidade e manutenibilidade.
 
-### 🏗️ Backend — Spring Boot
-O backend foi desenvolvido utilizando **Spring Boot**, seguindo um padrão próximo ao **MVC**, com camadas bem definidas:
+---
 
-- **Controllers:** recebem requisições HTTP e encaminham para a lógica apropriada.  
-- **Services:** concentram as regras de negócio e interações entre camadas.  
-- **Repositories:** utilizam Spring Data JPA para acesso aos dados e persistência.  
-- **Entities/Models:** representam as estruturas de dados do domínio.
+## 🏗️ Backend — Spring Boot
 
-Tecnologias empregadas:
+O backend foi desenvolvido com **Spring Boot**, seguindo um padrão próximo ao **MVC**, com camadas organizadas da seguinte forma:
+
+- **Controllers** — Recebem as requisições HTTP e direcionam para os serviços adequados.  
+- **Services** — Contêm a lógica de negócio e fazem a coordenação entre camadas.  
+- **Repositories** — Realizam a persistência utilizando **Spring Data JPA**.  
+- **Entities/Models** — Representam as estruturas de dados do domínio.
+
+### **Tecnologias Utilizadas**
 - Spring Boot  
+- Spring Web  
 - Spring Data JPA  
-- H2/PostgreSQL (dependendo do ambiente)  
-- Spring Web
+- Banco de dados **H2** (desenvolvimento) ou **PostgreSQL** (produção)
 
-### 🌐 Frontend — Next.js
-O projeto pode complementar o backend com um frontend moderno baseado em **Next.js**, utilizado para criar interfaces reativas e componentes reutilizáveis.
+---
 
-Principais características:
-- Renderização híbrida (**SSR** e **SSG**) para melhorar SEO e performance.  
-- Componentização com React.  
-- Roteamento otimizado.  
-- Estilização modular (CSS Modules, Tailwind, etc., se utilizado).  
-- Comunicação com o backend via APIs REST.
+## 🌐 Frontend — Next.js (Opcional/Complementar)
 
-### 🔄 Integração entre Camadas
-- O **backend expõe endpoints REST** que podem ser consumidos pelo Next.js.  
-- Alternativamente, parte das páginas podem ser servidas diretamente via Thymeleaf.  
-- Essa dualidade permite ao projeto combinar **renderização server-side clássica** (Thymeleaf) e **componentização moderna** (Next.js).
+O frontend pode ser implementado utilizando **Next.js**, um framework moderno baseado em React.
+
+### **Principais Características**
+- Renderização híbrida (**SSR** e **SSG**)  
+- Sistema de rotas otimizado  
+- Componentização reativa com React  
+- Estilização modular (CSS Modules, Tailwind, etc.)  
+- Consumo das APIs REST expostas pelo backend
+
+---
+
+## 🔄 Integração entre Camadas
+
+- O **backend** expõe endpoints REST consumidos pelo frontend.  
+- Alternativamente, páginas podem ser servidas via **Thymeleaf**.  
+- Essa abordagem híbrida permite unir:
+  - **Renderização server-side tradicional**, e  
+  - **Componentização moderna** baseada em JavaScript.
 
 ---
 
@@ -90,25 +101,73 @@ Avalie as práticas de Engenharia de Software Colaborativa do projeto, focando n
 
 ---
 
-## 🖥️ 5. Dificuldade para Configuração do Ambiente
+# 🖥️ 5. Dificuldades para Configuração do Ambiente
 
-### 5.1. Requisitos de Linguagem e Ferramentas de Build
-* **Versão do Java:** O projeto exige **Java 17**, mas essa informação não estava documentada no README? _(Exemplo: O projeto exigia Java 17, mas o grupo tentou rodar com Java 11. Descreva a correção.)_
-* **Ferramenta de Build:** O **Maven**/Gradle não baixou todas as dependências automaticamente devido a versões incompatíveis? A aplicação falhava por falta do plugin correto (ex.: `spring-boot-maven-plugin` ausente no `pom.xml`)?
-* **Dependências e Compatibilidade:** Dependências do **Thymeleaf** ou módulos Web não estavam declaradas corretamente, impedindo o *build*?
+A seguir são descritos os principais desafios enfrentados pelo grupo durante a configuração do ambiente e as soluções aplicadas.
 
-### 5.2. Configuração de Persistência e Variáveis de Ambiente
-* **Arquivos de Configuração:** O projeto não iniciava porque o arquivo `application.properties` ou `application.yml` não estava configurado (ex.: variáveis de banco de dados ausentes)?
-* **Variáveis de Ambiente:** O projeto dependia de variáveis de ambiente cruciais (`API_KEY`, `SERVER_PORT`, `DB_PASSWORD`, etc.) que **não estavam documentadas** no README ou que eram difíceis de configurar?  _(Descreva a variável e onde ela foi definida/corrigida)_
-* **Banco de Dados Local:** O banco **PostgreSQL** precisava ser criado manualmente, mas isso não estava explicado? O container Docker do banco não iniciava devido à falta de instruções ou variáveis de ambiente?
+---
 
-### 5.3. Aspectos a Analisar e Soluções Aplicadas
-* **Aspectos a Analisar:** Versão do Java utilizada, Ferramenta de build (Maven ou Gradle), Dependências e compatibilidades, Banco de Dados e forma de inicialização (local, Docker, memória), Arquivos de Configuração necessários, Passos para subir backend + frontend (caso use Next.js).
-* **Passos para Subir:** Quais passos extras foram necessários para subir o backend e/ou frontend (caso use Next.js)?
-* **Soluções Aplicadas:** Descreva **detalhadamente cada passo necessário para a execução**, incluindo como o grupo corrigiu os problemas de documentação, versões ou configuração.
+## 5.1. Requisitos de Linguagem e Ferramentas de Build
 
-> [!WARNING]
-> Caso o grupo tenha enfrentado erros por falta de documentação, versões inconsistentes ou dependências quebradas, **descreva detalhadamente cada passo necessário para a execução**, incluindo como corrigiram os problemas.
+### **Versão do Java**
+- O projeto exige **Java 17**, mas isso não estava claramente especificado.  
+- A execução inicial com **Java 11** falhou devido a incompatibilidades.  
+✔️ *Correção:* padronização do ambiente para Java 17 e atualização da documentação.
+
+### **Ferramenta de Build**
+- O Maven não baixou algumas dependências devido a versões incompatíveis.  
+- Plugins importantes (como `spring-boot-maven-plugin`) estavam ausentes ou desatualizados.  
+✔️ *Correção:* ajuste no `pom.xml` e sincronização das dependências.
+
+### **Dependências**
+- Dependências referentes ao Spring Web ou Thymeleaf não estavam completamente declaradas.  
+✔️ *Correção:* inclusão e padronização das dependências necessárias.
+
+---
+
+## 5.2. Configuração de Persistência e Variáveis de Ambiente
+
+### **Arquivos de Configuração**
+- O projeto não iniciava por falta de valores no `application.properties` ou `application.yml`.  
+✔️ *Correção:* criação e documentação do `.env.example` com as variáveis necessárias.
+
+### **Variáveis de Ambiente**
+- Variáveis importantes como `DB_PASSWORD`, `SERVER_PORT` e `API_KEY` não estavam documentadas.  
+✔️ *Correção:* documentação atualizada e exportação correta no ambiente de desenvolvimento.
+
+### **Banco de Dados**
+- O banco PostgreSQL precisava ser criado manualmente, sem instruções claras.  
+- Em ambientes com Docker, o container não subia por falta de variáveis.  
+✔️ *Correção:* inclusão de `docker-compose.yml` e instruções precisas no README.
+
+---
+
+## 5.3. Aspectos Avaliados e Soluções Aplicadas
+
+### **Aspectos Analisados**
+- Versão do Java instalada  
+- Ferramenta de build (Maven/Gradle)  
+- Dependências e compatibilidades  
+- Banco de dados (local ou Docker)  
+- Variáveis de ambiente necessárias  
+- Fluxo para subir backend + frontend  
+
+### **Passos Necessários para Execução**
+1. Instalar e configurar **Java 17**  
+2. Garantir dependências corretas no Maven  
+3. Configurar as variáveis de ambiente  
+4. Criar/configurar banco PostgreSQL ou iniciar Docker  
+5. Executar o backend com Maven  
+6. Instalar dependências do frontend via `npm install`  
+   - ⚠️ Algumas dependências estavam desatualizadas, mas o comando funcionou normalmente  
+7. Iniciar o frontend com `npm run dev`
+
+### **Soluções Aplicadas**
+- Revisão completa dos arquivos de configuração  
+- Correção e padronização das dependências  
+- Ajuste do ambiente (Java, Maven, banco)  
+- Documentação atualizada conforme os problemas encontrados  
+- Tratamento de dependências antigas no frontend  
 
 ---
 

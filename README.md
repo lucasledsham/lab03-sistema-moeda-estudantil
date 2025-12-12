@@ -125,71 +125,46 @@ Avalie as práticas de Engenharia de Software Colaborativa do projeto, focando n
 
 # 🖥️ 5. Dificuldades para Configuração do Ambiente
 
-A seguir são descritos os principais desafios enfrentados pelo grupo durante a configuração do ambiente e as soluções aplicadas.
+Durante a preparação do ambiente de desenvolvimento do **EduCoin**, algumas dificuldades pontuais foram encontradas, principalmente no frontend. A seguir estão descritos os problemas reais enfrentados e as soluções aplicadas.
 
 ---
 
-## 5.1. Requisitos de Linguagem e Ferramentas de Build
+## 5.1. Backend — Configuração sem Dificuldades
 
-### **Versão do Java**
-- O projeto exige **Java 17**, mas isso não estava claramente especificado.  
-- A execução inicial com **Java 11** falhou devido a incompatibilidades.  
-✔️ *Correção:* padronização do ambiente para Java 17 e atualização da documentação.
+O backend foi configurado utilizando **Java 21**, e todo o ambiente funcionou corretamente desde o início.
 
-### **Ferramenta de Build**
-- O Maven não baixou algumas dependências devido a versões incompatíveis.  
-- Plugins importantes (como `spring-boot-maven-plugin`) estavam ausentes ou desatualizados.  
-✔️ *Correção:* ajuste no `pom.xml` e sincronização das dependências.
+- O projeto subiu normalmente.
+- Não houve conflitos de versão.
+- As dependências via Maven foram baixadas sem erros.
+- A integração com o MongoDB ocorreu como esperado.
 
-### **Dependências**
-- Dependências referentes ao Spring Web ou Thymeleaf não estavam completamente declaradas.  
-✔️ *Correção:* inclusão e padronização das dependências necessárias.
+**✔️ Status:** Nenhuma dificuldade significativa durante a configuração do backend.
 
 ---
 
-## 5.2. Configuração de Persistência e Variáveis de Ambiente
+## 5.2. Frontend — Problemas com Dependências
 
-### **Arquivos de Configuração**
-- O projeto não iniciava por falta de valores no `application.properties` ou `application.yml`.  
-✔️ *Correção:* criação e documentação do `.env.example` com as variáveis necessárias.
+A única dificuldade real encontrada pelo grupo ocorreu no **frontend**.
 
-### **Variáveis de Ambiente**
-- Variáveis importantes como `DB_PASSWORD`, `SERVER_PORT` e `API_KEY` não estavam documentadas.  
-✔️ *Correção:* documentação atualizada e exportação correta no ambiente de desenvolvimento.
+### 📦 Dependências Desatualizadas
 
-### **Banco de Dados**
-- O banco PostgreSQL precisava ser criado manualmente, sem instruções claras.  
-- Em ambientes com Docker, o container não subia por falta de variáveis.  
-✔️ *Correção:* inclusão de `docker-compose.yml` e instruções precisas no README.
+- Algumas dependências do React/TypeScript estavam desatualizadas.
+- Isso gerou avisos e pequenos erros durante a instalação.
+- Apesar disso, o comando `npm install` funcionou após ajustes mínimos.
+- Toda a estrutura do projeto rodou normalmente com `npm run dev`.
+
+**✔️ Solução aplicada:**  
+Atualização ou substituição das dependências incompatíveis, garantindo funcionamento estável.
 
 ---
 
-## 5.3. Aspectos Avaliados e Soluções Aplicadas
+## 5.3. Resultado Final do Ambiente
 
-### **Aspectos Analisados**
-- Versão do Java instalada  
-- Ferramenta de build (Maven/Gradle)  
-- Dependências e compatibilidades  
-- Banco de dados (local ou Docker)  
-- Variáveis de ambiente necessárias  
-- Fluxo para subir backend + frontend  
+Após os ajustes mencionados:
 
-### **Passos Necessários para Execução**
-1. Instalar e configurar **Java 17**  
-2. Garantir dependências corretas no Maven  
-3. Configurar as variáveis de ambiente  
-4. Criar/configurar banco PostgreSQL ou iniciar Docker  
-5. Executar o backend com Maven  
-6. Instalar dependências do frontend via `npm install`  
-   - ⚠️ Algumas dependências estavam desatualizadas, mas o comando funcionou normalmente  
-7. Iniciar o frontend com `npm run dev`
-
-### **Soluções Aplicadas**
-- Revisão completa dos arquivos de configuração  
-- Correção e padronização das dependências  
-- Ajuste do ambiente (Java, Maven, banco)  
-- Documentação atualizada conforme os problemas encontrados  
-- Tratamento de dependências antigas no frontend  
+- O **backend (Java 21)** rodou sem qualquer problema.
+- O **frontend** foi executado com sucesso após corrigir as dependências.
+- As instruções do README original foram suficientes para levantar toda a aplicação.
 
 ---
 

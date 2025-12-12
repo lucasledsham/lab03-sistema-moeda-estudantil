@@ -11,28 +11,13 @@ export type LoginResponse = {
 };
 
 export async function loginRequest(data: LoginPayload): Promise<LoginResponse> {
-  const res = await fetch(`${api}auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-
-  if (!res.ok) {
-    const text = await tryGetError(res);
-    throw new Error(text || "Erro ao fazer login");
-  }
-
   try {
-    return await res.json();
-  } catch {
-    return {};
-  }
-}
-
-async function tryGetError(res: Response) {
-  try {
-    return await res.text();
-  } catch {
-    return "Erro desconhecido";
+    const res = await api.post("auth/login", data);
+    return res.data;
+  } catch (err: any) {
+    if (err.response) {
+      throw new Error(err.response.data || "Erro ao fazer login");
+    }
+    throw new Error("Erro desconhecido");
   }
 }

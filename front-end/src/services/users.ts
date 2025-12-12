@@ -21,10 +21,8 @@ export async function fetchUsers(): Promise<{ data: User[]; error: string | null
   }
 
   try {
-    const res = await fetch(`${api}admin/users`);
-    if (!res.ok) throw new Error(`server responded ${res.status}`);
-    const data: User[] = await res.json();
-    return { data, error: null };
+    const res = await api.get("admin/users");
+    return { data: res.data, error: null };
   } catch (err) {
     console.warn("Backend falhou, usando MOCK_USERS:", err);
     return {
@@ -35,17 +33,19 @@ export async function fetchUsers(): Promise<{ data: User[]; error: string | null
 }
 
 export async function updateUser(user: User) {
-  return fetch(`${api}admin/users`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user)
-  });
+  try {
+    const res = await api.put("admin/users", user);
+    return res.data;
+  } catch (err: any) {
+    throw new Error(err.response?.data || "Erro ao atualizar usuário");
+  }
 }
 
 export async function deleteUser(id: string) {
-return fetch(`${api}admin/users`, {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id })
-  });
+  try {
+    const res = await api.delete("admin/users", { data: { id } });
+    return res.data;
+  } catch (err: any) {
+    throw new Error(err.response?.data || "Erro ao excluir usuário");
+  }
 }

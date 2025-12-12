@@ -26,49 +26,71 @@
 
 ## 🧱 3. Arquitetura e Tecnologias Utilizadas
 
-O projeto utiliza uma arquitetura modular dividida entre **backend** e **frontend**, garantindo separação de responsabilidades, escalabilidade e manutenibilidade.
+O **EduCoin** utiliza uma arquitetura modular composta por **backend**, **frontend** e **banco de dados**, garantindo separação clara de responsabilidades, manutenção facilitada e escalabilidade para futuras expansões do sistema.
 
 ---
 
 ## 🏗️ Backend — Spring Boot
 
-O backend foi desenvolvido com **Spring Boot**, seguindo um padrão próximo ao **MVC**, com camadas organizadas da seguinte forma:
+O backend foi implementado utilizando **Spring Boot**, seguindo uma estrutura próxima ao padrão **MVC**, onde o fluxo de dados é organizado em camadas específicas:
 
-- **Controllers** — Recebem as requisições HTTP e direcionam para os serviços adequados.  
-- **Services** — Contêm a lógica de negócio e fazem a coordenação entre camadas.  
-- **Repositories** — Realizam a persistência utilizando **Spring Data JPA**.  
-- **Entities/Models** — Representam as estruturas de dados do domínio.
+- **Controllers** — Manipulam as requisições HTTP, validam dados recebidos e direcionam a operação para os serviços responsáveis.  
+- **Services** — Contêm toda a lógica de negócio do sistema, como envio de moedas, cálculo de saldo, geração de cupons e notificações.  
+- **Repositories** — Realizam a integração com o **MongoDB** por meio do Spring Data, permitindo operações de persistência de forma simples e eficiente.  
+- **Models/Entities** — Representam as principais entidades do domínio: Aluno, Professor, Empresa, Vantagens, Cupons e Transações.
 
-### **Tecnologias Utilizadas**
-- Spring Boot  
+### **Tecnologias do Backend**
+- Spring Boot 3+  
 - Spring Web  
-- Spring Data JPA  
-- Banco de dados **H2** (desenvolvimento) ou **PostgreSQL** (produção)
+- Spring Data MongoDB  
+- Bean Validation (Jakarta Validation)  
+- Serviço de e-mail integrado  
+- Autenticação e controle de perfis de usuário  
 
 ---
 
-## 🌐 Frontend — Next.js (Opcional/Complementar)
+## 🌐 Frontend — React + TypeScript
 
-O frontend pode ser implementado utilizando **Next.js**, um framework moderno baseado em React.
+O frontend foi desenvolvido utilizando **React** com **TypeScript**, garantindo segurança tipada, reutilização de componentes e uma experiência moderna para todos os perfis de usuários do sistema.
 
-### **Principais Características**
-- Renderização híbrida (**SSR** e **SSG**)  
-- Sistema de rotas otimizado  
-- Componentização reativa com React  
-- Estilização modular (CSS Modules, Tailwind, etc.)  
-- Consumo das APIs REST expostas pelo backend
+### **Recursos Utilizados**
+- React + TypeScript  
+- Tailwind CSS  
+- Shadcn/UI  
+- Zod (validação no frontend)  
+- Lucide Icons  
+- Consumo de APIs REST via fetch/axios  
+
+O uso dessas tecnologias possibilita interfaces dinâmicas, responsivas e com foco na experiência do usuário.
+
+---
+
+## 🗄️ Banco de Dados — MongoDB
+
+O sistema utiliza **MongoDB**, um banco NoSQL orientado a documentos, ideal para trabalhar com modelos de dados flexíveis e escaláveis.
+
+### **Principais Benefícios**
+- Estrutura flexível para entidades como usuários, vantagens e transações  
+- Alta performance em operações de leitura e escrita  
+- Fácil integração com Spring Data MongoDB  
+- Permite escalar horizontalmente conforme o volume de dados cresce  
 
 ---
 
-## 🔄 Integração entre Camadas
+## 🔄 Integração Entre as Camadas
 
-- O **backend** expõe endpoints REST consumidos pelo frontend.  
-- Alternativamente, páginas podem ser servidas via **Thymeleaf**.  
-- Essa abordagem híbrida permite unir:
-  - **Renderização server-side tradicional**, e  
-  - **Componentização moderna** baseada em JavaScript.
+A comunicação entre frontend e backend acontece por meio de **APIs RESTful**, seguindo o seguinte fluxo:
+
+1. O frontend envia requisições HTTP (ex.: login, envio de moedas, resgate de cupons).  
+2. O backend processa as regras de negócio e interage com o banco de dados.  
+3. Quando necessário, são disparados serviços adicionais (como envio de e-mail).  
+4. O backend retorna a resposta ao frontend, que atualiza a interface.  
+
+Durante o desenvolvimento, o backend foi disponibilizado publicamente utilizando **Ngrok**, permitindo testes reais e integração direta com o frontend hospedado.
 
 ---
+
+Esse modelo garante um sistema robusto, modular e preparado para evoluções futuras, como deploy com Docker, integração contínua e escalabilidade distribuída.
 
 ## 🗂️ 4. Organização do GitHub e Fluxo de Trabalho Colaborativo
 

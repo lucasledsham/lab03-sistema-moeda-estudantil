@@ -1,231 +1,300 @@
-# 🪙 **EduCoin — Sistema de Mérito Estudantil com Moeda Virtual**
+# 📘 Relatório de Análise Crítica do Projeto 👨‍💻
 
-<a href="https://classroom.github.com/online_ide?assignment_repo_id=99999999&assignment_repo_type=AssignmentRepo"><img src="https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg" width="200"/></a>
-<a href="https://classroom.github.com/open-in-codespaces?assignment_repo_id=99999999"><img src="https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg" width="250"/></a>
-
----
-
-> [!NOTE]
-> O **EduCoin** é um sistema de reconhecimento acadêmico baseado em **moeda virtual** distribuída por professores a estudantes, que podem trocá-la por benefícios e produtos em empresas parceiras.
-
-<table>
-  <tr>
-    <td width="800px">
-      <div align="justify">
-        O <b>EduCoin</b> promove o engajamento estudantil por meio de um sistema de <i>gamificação acadêmica</i>, onde professores recompensam alunos com moedas digitais — trocáveis por vantagens reais disponibilizadas por empresas. Este README segue um template profissional recomendado pelo <a href="https://github.com/joaopauloaramuni">Prof. Dr. João Paulo Aramuni</a>, assegurando documentação clara, organizada e padronizada.
-      </div>
-    </td>
-    <td>
-      <div>
-        <img src="https://joaopauloaramuni.github.io/image/logo_ES_vertical.png" alt="Logo do Projeto" width="120px"/>
-      </div>
-    </td>
-  </tr>
-</table>
+## 1. Informações do grupo
+- **🎓 Curso:** Engenharia de Software
+- **📘 Disciplina:** Laboratório de Desenvolvimento de Software
+- **🗓 Período:** 4° Período
+- **👨‍🏫 Professor(a):** Prof. Dr. João Paulo Carneiro Aramuni
+- **👥 Membros do Grupo:** [Lista de integrantes]
 
 ---
 
-# 🚧 **Status do Projeto**
-
-[![Versão](https://img.shields.io/badge/Versão-v1.0.0-blue)]()
-![React](https://img.shields.io/badge/React-Typescript-007ec6?style=for-the-badge&logo=react&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.0+-007ec6?style=for-the-badge&logo=springboot&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-NoSQL-007ec6?style=for-the-badge&logo=mongodb&logoColor=white)
-
----
-
-# 📚 **Índice**
-
-- [Links Úteis](#-links-úteis)
-- [Sobre o Projeto](#-sobre-o-projeto)
-- [Funcionalidades Principais](#-funcionalidades-principais)
-- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
-- [Arquitetura](#-arquitetura)
-- [Instalação e Execução](#-instalação-e-execução)
-- [Deploy](#-deploy)
-- [Estrutura de Pastas](#-estrutura-de-pastas)
-- [Autores](#-autores)
-- [Agradecimentos](#-agradecimentos)
-- [Licenca](#-licenca)
+## 📌 2. Identificação do Projeto
+- **Nome do projeto:** EduCoins
+- **Integrantes do outro grupo:** Guilherme Martini Brina Ferreira, Lucas Nunes Leal Ledsham, Thales Eduardo de Carvalho.
+- **Link do repositório:** https://github.com/lucasledsham/lab03-sistema-moeda-estudantil.git
+- **Pull requests submetidos pelo seu grupo:**
+  
+  | 👤 Integrante | 🔧 Refatoração | 🔗 Link do PR |
+  |--------------|---------------|----------------|
+  | :octocat: <a href="https://github.com/user1">Jonathan Sena </a> | Estrutura e código duplicado do frontend | https://github.com/exemplo/projeto/pull/1 |
+  | :octocat: <a href="https://github.com/user2">Matheus Fernandes </a> | Organização de Pastas e Modularização do Backend | https://github.com/exemplo/projeto/pull/2 |
+  | :octocat: <a href="https://github.com/user3">Victor Gabriel</a> | Refatoração backend - Camada services | https://github.com/exemplo/projeto/pull/3 |
+  | :octocat: <a href="https://github.com/user4">Vitor Hugo</a> | Refatoração frontend | https://github.com/exemplo/projeto/pull/4 |
 
 ---
 
-# 🔗 **Links Úteis**
+## 🧱 3. Arquitetura e Tecnologias Utilizadas
 
-* 🌐 **Aplicação Web:** https://ayaan-hypergenetic-doloris.ngrok-free.dev/login
+O projeto utiliza uma arquitetura dividida entre backend e frontend, promovendo modularidade, separação de responsabilidades e facilidade de manutenção.
 
----
+### 🏗️ Backend — Spring Boot
+O backend foi desenvolvido utilizando **Spring Boot**, seguindo um padrão próximo ao **MVC**, com camadas bem definidas:
 
-# 📝 **Sobre o Projeto**
+- **Controllers:** recebem requisições HTTP e encaminham para a lógica apropriada.  
+- **Services:** concentram as regras de negócio e interações entre camadas.  
+- **Repositories:** utilizam Spring Data JPA para acesso aos dados e persistência.  
+- **Entities/Models:** representam as estruturas de dados do domínio.
 
-O **EduCoin** foi criado para resolver a falta de mecanismos claros de **reconhecimento e incentivo acadêmico** dentro das instituições de ensino.  
+Tecnologias empregadas:
+- Spring Boot  
+- Spring Data JPA  
+- H2/PostgreSQL (dependendo do ambiente)  
+- Spring Web
 
-Com ele:
+### 🌐 Frontend — Next.js
+O projeto pode complementar o backend com um frontend moderno baseado em **Next.js**, utilizado para criar interfaces reativas e componentes reutilizáveis.
 
-- Professores premiam os alunos com moedas virtuais.
-- Alunos podem trocar moedas por benefícios reais.
-- Empresas parceiras ganham visibilidade e tráfego.
-- A instituição incentiva o engajamento de forma moderna.
+Principais características:
+- Renderização híbrida (**SSR** e **SSG**) para melhorar SEO e performance.  
+- Componentização com React.  
+- Roteamento otimizado.  
+- Estilização modular (CSS Modules, Tailwind, etc., se utilizado).  
+- Comunicação com o backend via APIs REST.
 
-O sistema é aplicável em escolas, faculdades, cursos livres e treinamentos corporativos.
-
----
-
-# ✨ **Funcionalidades Principais**
-
-### 👨‍🎓 **Alunos**
-- Cadastro completo  
-- Recebimento de moedas  
-- Notificação por e-mail  
-- Extrato e histórico de moedas  
-- Resgate de vantagens (produtos, serviços, descontos)  
-- Recebimento de cupom com código único  
-
-### 👩‍🏫 **Professores**
-- Pré-cadastrados pela instituição  
-- 1.000 moedas/semestre (acumulativas)  
-- Envio de moedas com mensagem obrigatória  
-- Controle de saldo e extratos  
-
-### 🏢 **Empresas Parceiras**
-- Cadastro da empresa  
-- Cadastro de vantagens (com foto e custo)  
-- Notificação por e-mail quando um cupom é resgatado  
-
-### 🏫 **Instituições**
-- Cadastro prévio  
-- Gestão de professores  
-
-### 🔐 **Autenticação**
-- Login/senha para todos os usuários  
-- Controle de acesso por tipo de perfil  
+### 🔄 Integração entre Camadas
+- O **backend expõe endpoints REST** que podem ser consumidos pelo Next.js.  
+- Alternativamente, parte das páginas podem ser servidas diretamente via Thymeleaf.  
+- Essa dualidade permite ao projeto combinar **renderização server-side clássica** (Thymeleaf) e **componentização moderna** (Next.js).
 
 ---
 
-# 🛠 **Tecnologias Utilizadas**
+## 🗂️ 4. Organização do GitHub e Fluxo de Trabalho Colaborativo
 
-## 💻 Front-end
-- **React**  
-- **TypeScript**  
-- **Shadcn/UI**  
-- **Tailwind CSS**  
-- **Zod**  
-- **Lucide Icons**  
+Avalie as práticas de Engenharia de Software Colaborativa do projeto, focando na clareza, padronização e rastreabilidade.
 
-## 🖥 Back-end
-- **Spring Boot (Java)**  
-- API REST com validação e autenticação  
+### 4.1. Estrutura do Repositório e Documentação
+* **Estrutura de Pastas:** A organização dos diretórios (`src`, `config`, `frontend`, etc.) segue as convenções padrão do Spring Boot/Next.js? A separação de Backend e Frontend é clara e lógica?
+* **Documentação Essencial:** O arquivo `README.md` é completo e útil? Verifique se ele contém:
+    * **Descrição** do projeto e suas funcionalidades.
+    * **Requisitos** de ambiente (Java, Node, versões específicas, etc.).
+    * **Instruções claras de inicialização** (incluindo banco de dados e comandos de *build*).
 
-## 🗄 Banco de Dados
-- **MongoDB** (NoSQL)
+### 4.2. Gerenciamento de Tarefas (Issues)
+* **Uso de Issues:** O grupo utilizou o sistema de Issues para:
+    * Rastrear bugs, funcionalidades e tarefas?
+    * Gerenciar o backlog e priorizar o trabalho (com *labels* ou *milestones*)?
+    * A descrição das Issues é suficientemente detalhada para guiar o desenvolvimento?
 
----
+### 4.3. Fluxo de Trabalho (Pull Requests e Branches)
+* **Branches:** O fluxo de *branching* é claro (e.g., usa *main/master*, *develop* e *feature branches*)?
+* **Pull Requests (PRs):** Qual a qualidade e o uso dos Pull Requests?
+    * Possuem **descrições** detalhadas e explicam o propósito das mudanças?
+    * Estão **vinculados** às Issues correspondentes?
+    * Foram usados para **Revisão de Código (Code Review)** antes do *merge*?
 
-# 🏗 **Arquitetura**
-
-Arquitetura cliente–servidor composta por:
-
-- **Frontend React**  
-- **API REST em Spring Boot**  
-- **MongoDB** como banco de dados documental  
-
-### Fluxo Simplificado
-
-1. Professor envia moedas ao aluno.  
-2. Backend valida saldo e registra transação.  
-3. Email é enviado automaticamente.  
-4. Aluno resgata uma vantagem.  
-5. Empresa recebe código de confirmação do cupom.  
+### 4.4. Padrões de Commits e Versionamento
+* **Padrão de Commits:** Existe um padrão de mensagens de commit (e.g., usando prefixos como `feat:`, `fix:`, `refactor:`)?
+    > **Sugestão:** Se não houver, mencione que a adoção de [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) melhoraria drasticamente a rastreabilidade e a geração automática de *changelogs*.
+* **Versionamento (Releases/Tags):** O projeto utiliza **Tags** ou **Releases** para marcar versões estáveis ou marcos importantes (e.g., `v1.0.0`)?
 
 ---
 
-# 🔧 **Instalação e Execução**
+## 🖥️ 5. Dificuldade para Configuração do Ambiente
 
-## Clonar o repositório
+### 5.1. Requisitos de Linguagem e Ferramentas de Build
+* **Versão do Java:** O projeto exige **Java 17**, mas essa informação não estava documentada no README? _(Exemplo: O projeto exigia Java 17, mas o grupo tentou rodar com Java 11. Descreva a correção.)_
+* **Ferramenta de Build:** O **Maven**/Gradle não baixou todas as dependências automaticamente devido a versões incompatíveis? A aplicação falhava por falta do plugin correto (ex.: `spring-boot-maven-plugin` ausente no `pom.xml`)?
+* **Dependências e Compatibilidade:** Dependências do **Thymeleaf** ou módulos Web não estavam declaradas corretamente, impedindo o *build*?
 
-```bash
-git clone https://github.com/lucasledsham/lab03-sistema-moeda-estudantil.git
+### 5.2. Configuração de Persistência e Variáveis de Ambiente
+* **Arquivos de Configuração:** O projeto não iniciava porque o arquivo `application.properties` ou `application.yml` não estava configurado (ex.: variáveis de banco de dados ausentes)?
+* **Variáveis de Ambiente:** O projeto dependia de variáveis de ambiente cruciais (`API_KEY`, `SERVER_PORT`, `DB_PASSWORD`, etc.) que **não estavam documentadas** no README ou que eram difíceis de configurar?  _(Descreva a variável e onde ela foi definida/corrigida)_
+* **Banco de Dados Local:** O banco **PostgreSQL** precisava ser criado manualmente, mas isso não estava explicado? O container Docker do banco não iniciava devido à falta de instruções ou variáveis de ambiente?
+
+### 5.3. Aspectos a Analisar e Soluções Aplicadas
+* **Aspectos a Analisar:** Versão do Java utilizada, Ferramenta de build (Maven ou Gradle), Dependências e compatibilidades, Banco de Dados e forma de inicialização (local, Docker, memória), Arquivos de Configuração necessários, Passos para subir backend + frontend (caso use Next.js).
+* **Passos para Subir:** Quais passos extras foram necessários para subir o backend e/ou frontend (caso use Next.js)?
+* **Soluções Aplicadas:** Descreva **detalhadamente cada passo necessário para a execução**, incluindo como o grupo corrigiu os problemas de documentação, versões ou configuração.
+
+> [!WARNING]
+> Caso o grupo tenha enfrentado erros por falta de documentação, versões inconsistentes ou dependências quebradas, **descreva detalhadamente cada passo necessário para a execução**, incluindo como corrigiram os problemas.
+
+---
+
+## 🔎 6. Análise de Qualidade do Código e Testes
+
+### 6.1. Design e Princípios SOLID
+* **Coesão e Acoplamento:** Existem classes com muitas responsabilidades (**God Class**)? O acoplamento entre módulos é alto?
+* **Princípios SOLID Violados (Se aplicável):** (Ex: O Controller faz validação e acesso ao banco, violando o **S**ingle Responsibility Principle - SRP).
+* **Code Smells:** Identifique a presença de **Long Method** (métodos com muitas linhas) ou **Duplicated Code** fora das áreas que vocês refatoraram.
+    * **Evidência/Exemplo:** _(Cite o arquivo e a linha onde um problema foi encontrado)_
+
+### 6.2. Testabilidade e Cobertura
+* **Presença de Testes:** O projeto possui testes (Unitários, Integração, End-to-End)?
+* **Cobertura (Estimada/Medida):** Qual é a cobertura de código (Se houver ferramenta para medir, cite o percentual)?
+    * **Qualidade dos Testes:** Os testes focam na lógica de negócio (camada Service) ou apenas na integração do sistema (testando o Controller e persistência)?
+    * **Mocking:** O uso de *mocks* e *stubs* é adequado para isolar as dependências e testar unidades de código?
+    * **Evidência/Exemplo:** _(Cite o diretório de testes (`src/test`) e mencione a ausência ou presença de testes para uma funcionalidade crítica)_
+
+### 6.3. Segurança e Tratamento de Erros (OWASP Top 10)
+Avalie o projeto com base em vulnerabilidades comuns, como as citadas no OWASP Top 10. 
+
+* **Validação de Entrada (Input Validation):** Existem validações rigorosas em todos os dados recebidos (DTOs)? Há sanitização de *input* para prevenir **Injeção de SQL/Scripting (XSS)**?
+* **Tratamento de Credenciais:** O tratamento de senhas é seguro (uso de `BCrypt` ou algoritmo forte)? As credenciais de acesso ao banco estão expostas no código ou em *logs*?
+* **Tratamento de Exceções:** O tratamento de exceções é adequado? A aplicação retorna mensagens de erro genéricas (status 500) ou expõe detalhes do erro e da arquitetura (vazamento de informações)?
+    * **Evidência/Exemplo:** _(Cite um ponto fraco, Ex: "O campo de busca não tem sanitização, potencial XSS" ou "As senhas não estão criptografadas")_
+
+---
+
+## 🚀 7. Sugestões de Melhorias
+
+Liste **entre 5 e 7 sugestões claras e prioritárias** para os autores do projeto, baseadas nas análises acima (Seções 3, 4, 5 e 6).
+
+1. **Melhoria da Documentação:** Criar um arquivo `CONTRIBUTING.md`, adicionar instruções completas de configuração do ambiente (Java, Maven, variáveis de ambiente e scripts de inicialização) e incluir uma seção de troubleshooting no `README.md`.
+2. **Padronização do Código:** Adotar **Conventional Commits**, habilitar ferramentas como **Spotless**, **Checkstyle** ou **SonarLint** para manter consistência e detectar code smells automaticamente.
+3. **Testes Automatizados:** Implementar testes unitários na camada de **Service** e testes de integração com **Spring Boot Test**, buscando ao menos **80% de cobertura** nas funcionalidades principais.
+4. **Melhorias de Segurança:** Utilizar **Spring Validation** para validação de DTOs, adicionar tratamento centralizado de erros com `@ControllerAdvice`, remover informações sensíveis de logs e revisar dependências vulneráveis usando `mvn dependency-check`.
+5. **Organização do Repositório:** Padronizar a estrutura de pastas, adicionar templates de Pull Request e Issues, além de configurar Branch Protection para `main`.
+6. **Performance e Otimização:** Analisar pontos de gargalo no carregamento de dados, reduzir consultas redundantes, aplicar cache quando adequado e revisar métodos que fazem processamento excessivo no backend.
+7. **Automação e CI/CD:** Criar uma pipeline no **GitHub Actions** para rodar testes, verificar estilo, validar segurança das dependências e realizar build automático a cada PR.
+
+---
+
+## 🔧 8. Refatorações Propostas (3 partes do código)
+
+Cada refatoração deve conter:
+1. **Arquivo e localização**  
+2. **Código antes**  
+3. **Código depois**  
+4. **Tipo de refatoração aplicada**  
+5. **Justificativa técnica**  
+6. **Link do Pull Request**
+
+---
+
+### 1️⃣ Refatoração 1 – Extração de Método (Extract Method)
+
+**Arquivo:** `src/main/java/com/example/service/UserService.java`  
+**Pull Request:** https://github.com/exemplo/projeto/pull/1  
+
+#### 🔴 Antes
+```java
+public User createUser(UserDTO dto) {
+    if (dto.getEmail() == null || !dto.getEmail().contains("@")) {
+        throw new IllegalArgumentException("Email inválido");
+    }
+    if (dto.getPassword() == null || dto.getPassword().length() < 8) {
+        throw new IllegalArgumentException("Senha fraca");
+    }
+
+    User user = new User(dto.getEmail(), dto.getPassword());
+    return userRepository.save(user);
+}
 ```
 
-## 🔧 Backend
+#### 🟢 Depois
+```java
+private void validateUserDTO(UserDTO dto) {
+    if (dto.getEmail() == null || !dto.getEmail().contains("@")) {
+        throw new IllegalArgumentException("Email inválido");
+    }
+    if (dto.getPassword() == null || dto.getPassword().length() < 8) {
+        throw new IllegalArgumentException("Senha fraca");
+    }
+}
 
-```bash
-cd lab03-sistema-moeda-estudantil/back-end/sistema-moeda-estudantil
-mvn spring-boot:run
+public User createUser(UserDTO dto) {
+    validateUserDTO(dto);
+    User user = new User(dto.getEmail(), dto.getPassword());
+    return userRepository.save(user);
+}
 ```
 
+#### ✔ Tipo de refatoração aplicada
+- **Extract Method**  
 
-## 💻 Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-# 🚀 **Deploy**
-
-Foi utilizado o Ngrok para realizar o deploy da aplicação.
-Link: https://ayaan-hypergenetic-doloris.ngrok-free.dev/login
-
-# 📂 **Estrutura de Pastas**
-
-```
-├── .editorconfig                # ✍️ Padronização de estilo de código.
-├── .env.example                 # 🧩 Exemplo de TODAS as variáveis necessárias (sem valores sensíveis).
-├── .gitignore                   # 🧹 Ignora arquivos/pastas não versionadas (.env, node_modules, target, etc.).
-├── .vscode/                     # ⚙️ Configurações de ambiente da IDE (opcional).
-├── .github/                     # 🤖 CI/CD (Actions), templates de Issues e Pull Requests.
-├── README.md                    # 📘 Documentação principal do projeto.
-├── CONTRIBUTING.md              # 🤝 Guia de contribuição.
-├── LICENSE                      # ⚖️ Licença do projeto.
-├── docker-compose.yml           # 🐳 Orquestração dos containers (front/back/db/etc).
-│
-├── /frontend                    # 📁 Aplicação Frontend
-│   ├── /src                     # 📂 Código-fonte React
-│   ├── /public                  # 🌐 Arquivos públicos e index.html
-│   ├── package.json             # 📦 Dependências e scripts do projeto
-│
-├── /backend                     # 🔧 API Spring Boot
-│   ├── .env.example             # 🧩 Variáveis de ambiente do Back-end.
-│   │
-│   ├── /src/main/java           # 📂 Código-fonte Java
-│   │   └── /com/exemplo/app
-│   │       ├── /controller      # 🎮 Endpoints REST.
-│   │       ├── /service         # ⚙️ Regras e lógica de negócio.
-│   │       ├── /repository      # 🗄️ Repositórios (JPA/Hibernate).
-│   │       ├── /model           # 🧬 Entidades persistentes (JPA).
-│   │
-│   ├── /src/main/resources      # 📂 Recursos do Spring Boot
-│   │   ├── application.yml         # ⚙️ Configuração principal da aplicação
-│   │   ├── application-dev.yml     # 🧪 Configurações específicas do ambiente de DESENVOLVIMENTO
-│   │   ├── application-prod.yml    # 🚀 Configurações específicas para PRODUÇÃO
-│   │   ├── application-test.yml    # 🧪 Configurações usadas nos testes automatizados
-│   │   ├── /static                # 🌐 Arquivos estáticos (HTML/CSS/JS).
-│   │
-│
-├── /docs                         # 📚 Documentação, arquitetura, modelos C4, Swagger/OpenAPI.
-```
+#### 📝 Justificativa
+Melhora a clareza, responsabilidade única e testabilidade.
 
 ---
 
-# 👤 **Autores**
+### 2️⃣ Refatoração 2 – Remoção de Código Duplicado
 
-Guilherme Martini Brina Ferreira
-Estudante de Engenharia de Software — PUC Minas
+**Arquivo:** `src/main/java/com/example/util/StringUtils.java`  
+**Pull Request:** https://github.com/exemplo/projeto/pull/2  
 
-Lucas Nunes Leal Ledsham
-Estudante de Engenharia de Software — PUC Minas
+#### 🔴 Antes
+```java
+public String capitalizeName(String name) {
+    return name.substring(0, 1).toUpperCase() + name.substring(1);
+}
 
-Thales Eduardo de Carvalho Mattos
-Estudante de Engenharia de Software — PUC Minas
+public String capitalizeCity(String city) {
+    return city.substring(0, 1).toUpperCase() + city.substring(1);
+}
 
-# 🙏 **Agradecimentos**
+```
 
-PUC Minas – Engenharia de Software
+#### 🟢 Depois
+```java
+public String capitalize(String text) {
+    return text.substring(0, 1).toUpperCase() + text.substring(1);
+}
 
-Prof. Dr. João Paulo Aramuni
+public String capitalizeName(String name) {
+    return capitalize(name);
+}
 
-# 📄 **Licença**
+public String capitalizeCity(String city) {
+    return capitalize(city);
+}
+```
 
-Este projeto está sob a licença MIT.
+#### ✔ Tipo de refatoração aplicada
+- **Replace Duplicated Code with Method**
+
+#### 📝 Justificativa
+Elimina duplicação e facilita manutenção.
+
+---
+
+### 3️⃣ Refatoração 3 – Melhoria de Nomes (Rename)
+
+**Arquivo:** `src/main/java/com/example/controller/ProductController.java`  
+**Pull Request:** https://github.com/exemplo/projeto/pull/3  
+
+#### 🔴 Antes
+```java
+@PostMapping("/x")
+public void x(@RequestBody Product p) {
+    if (p == null) return;
+    service.save(p);
+}
+```
+
+#### 🟢 Depois
+```java
+@PostMapping("/save")
+public void saveProduct(@RequestBody Product product) {
+    if (product == null) return;
+    service.save(product);
+}
+```
+
+#### ✔ Tipo de refatoração aplicada
+- **Rename Method / Rename Parameter**
+
+#### 📝 Justificativa
+Melhora a clareza e expressividade do código.
+
+---
+
+## 9. 📄 Conclusão
+
+A análise crítica permitiu identificar aspectos importantes relacionados à **arquitetura**, **qualidade do código** e **organização geral do projeto**. A investigação detalhada evidenciou pontos positivos, como boas escolhas tecnológicas, mas também expôs problemas que comprometem a **manutenibilidade**, **segurança** e **performance** do sistema.
+
+As refatorações propostas tiveram impacto direto na **melhoria da legibilidade**, **redução de duplicidade**, **aumento da coesão** e **clareza das responsabilidades**. Além disso, práticas recomendadas foram introduzidas para tornar o código mais robusto, mitigando riscos como:
+- validações inconsistentes;
+- trechos suscetíveis a falhas de segurança (ex.: falta de sanitização ou verificações frágeis);
+- métodos extensos e difíceis de testar;
+- rotinas com potencial para degradação de desempenho.
+
+A análise também mostrou que melhorias adicionais podem ser adotadas, como:
+- padronização da comunicação via **Conventional Commits**;
+- reforço das práticas de **segurança** (validações mais estruturadas, tratamento de exceções, prevenção de vulnerabilidades comuns);
+- otimizações de **performance**, incluindo redução de operações redundantes e melhor organização das responsabilidades do backend;
+- ampliação e atualização da **documentação**, incluindo requisitos de ambiente e instruções claras de execução;
+- tratamento cuidadoso das dependências utilizadas no projeto.
+
+Por fim, o processo reforçou a importância da **refatoração contínua**, **revisão estruturada de código** e **boas práticas de engenharia**, fundamentais para manter um software sustentável, escalável e seguro ao longo de seu ciclo de vida.

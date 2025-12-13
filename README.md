@@ -7,8 +7,6 @@
 - **👨‍🏫 Professor(a):** Prof. Dr. João Paulo Carneiro Aramuni
 - **👥 Membros do Grupo:** [Lista de integrantes]
 
----
-
 ## 📌 2. Identificação do Projeto
 - **Nome do projeto:** EduCoins
 - **Integrantes do outro grupo:** Guilherme Martini Brina Ferreira, Lucas Nunes Leal Ledsham, Thales Eduardo de Carvalho.
@@ -17,18 +15,16 @@
   
   | 👤 Integrante | 🔧 Refatoração | 🔗 Link do PR |
   |--------------|---------------|----------------|
-  | :octocat: <a href="https://github.com/user1">Jonathan Sena </a> | Estrutura e código duplicado do frontend | https://github.com/exemplo/projeto/pull/1 |
-  | :octocat: <a href="https://github.com/user2">Matheus Fernandes </a> | Organização de Pastas e Modularização do Backend | https://github.com/exemplo/projeto/pull/2 |
-  | :octocat: <a href="https://github.com/user3">Victor Gabriel</a> | Refatoração backend - Camada services | https://github.com/exemplo/projeto/pull/3 |
-  | :octocat: <a href="https://github.com/user4">Vitor Hugo</a> | Refatoração frontend | https://github.com/exemplo/projeto/pull/4 |
+  | :octocat: <a href="https://github.com/Js3Silva">Jonathan Sena </a> | Estrutura e código duplicado do frontend | https://github.com/exemplo/projeto/pull/1 |
+  | :octocat: <a href="https://github.com/matheus-0063">Matheus Fernandes </a> | Organização de Pastas e Modularização do Backend | https://github.com/exemplo/projeto/pull/2 |
+  | :octocat: <a href="https://github.com/Victorgabrielcruz">Victor Gabriel</a> | Refatoração backend - Camada services | https://github.com/exemplo/projeto/pull/3 |
+  | :octocat: <a href="https://github.com/VitorHDMarinho">Vitor Hugo</a> | Refatoração frontend | https://github.com/exemplo/projeto/pull/4 |
 
 ---
 
 ## 🧱 3. Arquitetura e Tecnologias Utilizadas
 
 O **EduCoin** utiliza uma arquitetura modular composta por **backend**, **frontend** e **banco de dados**, garantindo separação clara de responsabilidades, manutenção facilitada e escalabilidade para futuras expansões do sistema.
-
----
 
 ## 🏗️ Backend — Spring Boot
 
@@ -46,8 +42,6 @@ O backend foi implementado utilizando **Spring Boot**, seguindo uma estrutura pr
 - Bean Validation (Jakarta Validation)  
 - Serviço de e-mail integrado  
 - Autenticação e controle de perfis de usuário  
-
----
 
 ## 🌐 Frontend — React + TypeScript
 
@@ -86,42 +80,39 @@ A comunicação entre frontend e backend acontece por meio de **APIs RESTful**, 
 3. Quando necessário, são disparados serviços adicionais (como envio de e-mail).  
 4. O backend retorna a resposta ao frontend, que atualiza a interface.  
 
-Durante o desenvolvimento, o backend foi disponibilizado publicamente utilizando **Ngrok**, permitindo testes reais e integração direta com o frontend hospedado.
-
 ---
 
-Esse modelo garante um sistema robusto, modular e preparado para evoluções futuras, como deploy com Docker, integração contínua e escalabilidade distribuída.
-
+Esse modelo na teoria garante um sistema robusto, porém há uma desorganização estrutural e muito código "mocado". Recomendamos que boa parte seja reorganizada e refeita.
 ## 🗂️ 4. Organização do GitHub e Fluxo de Trabalho Colaborativo
 
-Avalie as práticas de Engenharia de Software Colaborativa do projeto, focando na clareza, padronização e rastreabilidade.
+Esta seção apresenta a avaliação das práticas de Engenharia de Software Colaborativa adotadas no projeto, considerando aspectos de clareza, padronização, organização e rastreabilidade das atividades realizadas no GitHub.
 
 ### 4.1. Estrutura do Repositório e Documentação
-* **Estrutura de Pastas:** A organização dos diretórios (`src`, `config`, `frontend`, etc.) segue as convenções padrão do Spring Boot/Next.js? A separação de Backend e Frontend é clara e lógica?
-* **Documentação Essencial:** O arquivo `README.md` é completo e útil? Verifique se ele contém:
-    * **Descrição** do projeto e suas funcionalidades.
-    * **Requisitos** de ambiente (Java, Node, versões específicas, etc.).
-    * **Instruções claras de inicialização** (incluindo banco de dados e comandos de *build*).
+
+A estrutura do repositório apresenta pontos positivos e negativos no que se refere à organização das pastas e à padronização adotada.
+
+Em relação aos aspectos positivos, observa-se a separação do projeto em diretórios distintos para front-end, back-end e documentos, o que contribui para uma melhor organização do código e dos artefatos do projeto. A pasta destinada ao front-end segue um padrão comum e adequado, contendo diretórios como `public`, `src` e arquivos de configuração, o que facilita a compreensão e manutenção da aplicação.
+
+Por outro lado, há pontos que podem ser melhorados. A nomenclatura das pastas poderia ser mais padronizada, evitando o uso do caractere "-" nos nomes. Além disso, a pasta de back-end apresenta dois arquivos referentes ao sistema (`sistema-moeda-estudantil`), o que pode gerar confusão quanto à estrutura e à organização correta do código.
+
+No que diz respeito à documentação, o arquivo `README.md` é considerado completo e útil. Ele apresenta uma descrição clara do projeto e de suas funcionalidades, informa os requisitos necessários para execução do sistema e fornece instruções claras de inicialização, incluindo orientações sobre o banco de dados e os comandos de build, facilitando o uso do repositório por novos colaboradores.
 
 ### 4.2. Gerenciamento de Tarefas (Issues)
-* **Uso de Issues:** O grupo utilizou o sistema de Issues para:
-    * Rastrear bugs, funcionalidades e tarefas?
-    * Gerenciar o backlog e priorizar o trabalho (com *labels* ou *milestones*)?
-    * A descrição das Issues é suficientemente detalhada para guiar o desenvolvimento?
 
-### 4.3. Fluxo de Trabalho (Pull Requests e Branches)
-* **Branches:** O fluxo de *branching* é claro (e.g., usa *main/master*, *develop* e *feature branches*)?
-* **Pull Requests (PRs):** Qual a qualidade e o uso dos Pull Requests?
-    * Possuem **descrições** detalhadas e explicam o propósito das mudanças?
-    * Estão **vinculados** às Issues correspondentes?
-    * Foram usados para **Revisão de Código (Code Review)** antes do *merge*?
+Não foi identificado o uso do recurso de Issues do GitHub pelo grupo. Dessa forma, não houve registro formal de tarefas, bugs ou melhorias por meio dessa funcionalidade, o que limita a rastreabilidade das demandas e o acompanhamento da evolução do projeto.
+
+### 4.3. Fluxo de Trabalho (Branches e Pull Requests)
+
+Em relação às branches, o repositório possui a branch `develop`, porém as demais branches não apresentam uma organização clara ou um padrão bem definido, dificultando a compreensão do fluxo de desenvolvimento adotado.
+
+Quanto ao uso de Pull Requests, foram identificados três PRs no repositório. No entanto, eles não apresentam informações que permitam avaliar aspectos importantes do fluxo colaborativo, como descrições detalhadas explicando o propósito das mudanças realizadas, vinculação com Issues correspondentes ou a utilização do recurso para revisão de código antes da realização do merge.
 
 ### 4.4. Padrões de Commits e Versionamento
-* **Padrão de Commits:** Existe um padrão de mensagens de commit (e.g., usando prefixos como `feat:`, `fix:`, `refactor:`)?
-    > **Sugestão:** Se não houver, mencione que a adoção de [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) melhoraria drasticamente a rastreabilidade e a geração automática de *changelogs*.
-* **Versionamento (Releases/Tags):** O projeto utiliza **Tags** ou **Releases** para marcar versões estáveis ou marcos importantes (e.g., `v1.0.0`)?
 
----
+Não foi identificado um padrão definido para as mensagens de commit utilizadas no projeto, o que compromete a clareza e a rastreabilidade das alterações realizadas ao longo do desenvolvimento. Como melhoria, a adoção do padrão Conventional Commits poderia contribuir significativamente para a organização do histórico de commits e para a geração automática de changelogs.
+
+Em relação ao versionamento, o projeto não utiliza Tags ou Releases no GitHub, não havendo, portanto, um controle formal de versões do sistema ao longo do tempo.
+
 
 # 🖥️ 5. Dificuldades para Configuração do Ambiente
 

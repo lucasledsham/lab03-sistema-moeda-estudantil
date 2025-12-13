@@ -20,7 +20,6 @@
   | :octocat: <a href="https://github.com/Victorgabrielcruz">Victor Gabriel</a> | Refatoração backend - Camada services | https://github.com/exemplo/projeto/pull/3 |
   | :octocat: <a href="https://github.com/VitorHDMarinho">Vitor Hugo</a> | Refatoração frontend | https://github.com/exemplo/projeto/pull/4 |
 
----
 
 ## 🧱 3. Arquitetura e Tecnologias Utilizadas
 
@@ -57,7 +56,6 @@ O frontend foi desenvolvido utilizando **React** com **TypeScript**, garantindo 
 
 O uso dessas tecnologias possibilita interfaces dinâmicas, responsivas e com foco na experiência do usuário.
 
----
 
 ## 🗄️ Banco de Dados — MongoDB
 
@@ -69,7 +67,6 @@ O sistema utiliza **MongoDB**, um banco NoSQL orientado a documentos, ideal para
 - Fácil integração com Spring Data MongoDB  
 - Permite escalar horizontalmente conforme o volume de dados cresce  
 
----
 
 ## 🔄 Integração Entre as Camadas
 
@@ -79,8 +76,6 @@ A comunicação entre frontend e backend acontece por meio de **APIs RESTful**, 
 2. O backend processa as regras de negócio e interage com o banco de dados.  
 3. Quando necessário, são disparados serviços adicionais (como envio de e-mail).  
 4. O backend retorna a resposta ao frontend, que atualiza a interface.  
-
----
 
 Esse modelo na teoria garante um sistema robusto, porém há uma desorganização estrutural e muito código "mocado". Recomendamos que boa parte seja reorganizada e refeita.
 ## 🗂️ 4. Organização do GitHub e Fluxo de Trabalho Colaborativo
@@ -118,8 +113,6 @@ Em relação ao versionamento, o projeto não utiliza Tags ou Releases no GitHub
 
 Durante a preparação do ambiente de desenvolvimento do **EduCoin**, algumas dificuldades pontuais foram encontradas, principalmente no frontend. A seguir estão descritos os problemas reais enfrentados e as soluções aplicadas.
 
----
-
 ## 5.1. Backend — Configuração sem Dificuldades
 
 O backend foi configurado utilizando **Java 21**, e todo o ambiente funcionou corretamente desde o início.
@@ -130,8 +123,6 @@ O backend foi configurado utilizando **Java 21**, e todo o ambiente funcionou co
 - A integração com o MongoDB ocorreu como esperado.
 
 **✔️ Status:** Nenhuma dificuldade significativa durante a configuração do backend.
-
----
 
 ## 5.2. Frontend — Problemas com Dependências
 
@@ -147,7 +138,6 @@ A única dificuldade real encontrada pelo grupo ocorreu no **frontend**.
 **✔️ Solução aplicada:**  
 Atualização ou substituição das dependências incompatíveis, garantindo funcionamento estável.
 
----
 
 ## 5.3. Resultado Final do Ambiente
 
@@ -157,7 +147,6 @@ Após os ajustes mencionados:
 - O **frontend** foi executado com sucesso após corrigir as dependências.
 - As instruções do README original foram suficientes para levantar toda a aplicação.
 
----
 
 ## 🔎 6. Análise de Qualidade do Código e Testes
 

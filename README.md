@@ -15,7 +15,7 @@
   
   | 👤 Integrante | 🔧 Refatoração | 🔗 Link do PR |
   |--------------|---------------|----------------|
-  | :octocat: <a href="https://github.com/Js3Silva">Jonathan Sena </a> | Estrutura e código duplicado do frontend | https://github.com/exemplo/projeto/pull/1 |
+  | :octocat: <a href="https://github.com/Js3Silva">Jonathan Sena </a> | Estrutura e código duplicado do frontend | https://github.com/matheus-0063/lab03-sistema-moeda-estudantil/pull/1 |
   | :octocat: <a href="https://github.com/matheus-0063">Matheus Fernandes </a> | Organização de Pastas e Modularização do Backend | https://github.com/exemplo/projeto/pull/2 |
   | :octocat: <a href="https://github.com/Victorgabrielcruz">Victor Gabriel</a> | Refatoração backend - Camada services | https://github.com/exemplo/projeto/pull/3 |
   | :octocat: <a href="https://github.com/VitorHDMarinho">Vitor Hugo</a> | Refatoração frontend | https://github.com/exemplo/projeto/pull/4 |

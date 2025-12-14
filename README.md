@@ -148,42 +148,129 @@ Após os ajustes mencionados:
 - As instruções do README original foram suficientes para levantar toda a aplicação.
 
 
-## 🔎 6. Análise de Qualidade do Código e Testes
+# 🔎 6. Análise de Qualidade do Código e Testes
 
-### 6.1. Design e Princípios SOLID
-* **Coesão e Acoplamento:** Existem classes com muitas responsabilidades (**God Class**)? O acoplamento entre módulos é alto?
-* **Princípios SOLID Violados (Se aplicável):** (Ex: O Controller faz validação e acesso ao banco, violando o **S**ingle Responsibility Principle - SRP).
-* **Code Smells:** Identifique a presença de **Long Method** (métodos com muitas linhas) ou **Duplicated Code** fora das áreas que vocês refatoraram.
-    * **Evidência/Exemplo:** _(Cite o arquivo e a linha onde um problema foi encontrado)_
+Esta seção apresenta a análise da qualidade do código do projeto **EduCoin**, considerando aspectos de design, testabilidade e segurança, com base no estado atual do sistema antes do processo de refatoração.
 
-### 6.2. Testabilidade e Cobertura
-* **Presença de Testes:** O projeto possui testes (Unitários, Integração, End-to-End)?
-* **Cobertura (Estimada/Medida):** Qual é a cobertura de código (Se houver ferramenta para medir, cite o percentual)?
-    * **Qualidade dos Testes:** Os testes focam na lógica de negócio (camada Service) ou apenas na integração do sistema (testando o Controller e persistência)?
-    * **Mocking:** O uso de *mocks* e *stubs* é adequado para isolar as dependências e testar unidades de código?
-    * **Evidência/Exemplo:** _(Cite o diretório de testes (`src/test`) e mencione a ausência ou presença de testes para uma funcionalidade crítica)_
+---
 
-### 6.3. Segurança e Tratamento de Erros (OWASP Top 10)
-Avalie o projeto com base em vulnerabilidades comuns, como as citadas no OWASP Top 10. 
+## 6.1. Design e Princípios SOLID
 
-* **Validação de Entrada (Input Validation):** Existem validações rigorosas em todos os dados recebidos (DTOs)? Há sanitização de *input* para prevenir **Injeção de SQL/Scripting (XSS)**?
-* **Tratamento de Credenciais:** O tratamento de senhas é seguro (uso de `BCrypt` ou algoritmo forte)? As credenciais de acesso ao banco estão expostas no código ou em *logs*?
-* **Tratamento de Exceções:** O tratamento de exceções é adequado? A aplicação retorna mensagens de erro genéricas (status 500) ou expõe detalhes do erro e da arquitetura (vazamento de informações)?
-    * **Evidência/Exemplo:** _(Cite um ponto fraco, Ex: "O campo de busca não tem sanitização, potencial XSS" ou "As senhas não estão criptografadas")_
+Após a análise do código-fonte, foi identificado que o projeto **não aplica os princípios SOLID**. A organização das classes e camadas apresenta problemas de acoplamento, baixa coesão e ausência de separação clara de responsabilidades.
+
+### Coesão e Acoplamento
+- Diversas classes exercem **mais de uma responsabilidade**, caracterizando *God Classes*.  
+- O **acoplamento entre as camadas é elevado**, especialmente entre *Controllers* e *Repositories*.  
+- Em vários pontos do sistema, a camada de controle realiza acesso direto à camada de persistência, ignorando a camada de serviço.
+
+### Princípios SOLID Violados
+- **Single Responsibility Principle (SRP)**: violado, pois classes — principalmente *Controllers* — concentram:
+  - Lógica de negócio  
+  - Manipulação de entidades  
+  - Persistência de dados  
+- Outros princípios SOLID não são aplicados de forma explícita no projeto.
+
+### Code Smells Identificados
+- **Código Duplicado**: existem trechos de código semelhantes em diferentes partes do sistema, que poderiam ser refatorados para métodos reutilizáveis.  
+- **Lógica de Negócio em Controllers**: regras importantes estão implementadas diretamente nos endpoints HTTP.  
+
+### Evidência / Exemplo
+
+Exemplo de método localizado em uma *Controller*, onde ocorre acesso direto ao repositório e acúmulo de responsabilidades:
+
+```java
+    public ResponseEntity<?> purchaseBenefitAndGenerateCoupon(@PathVariable String benefitId, @RequestParam long cost) {
+        User user = userService.getSenderUser();
+        user.setCurrency(user.getCurrency() - cost);
+        userRepository.save(user);
+
+        final String coupon = generateCouponCode();
+
+        return ResponseEntity.ok(new PurchaseDTO(coupon));
+    }
+
+    private String generateCouponCode() {
+        return RandomStringUtils.random(6, true, true); // letras + números
+    }
+}
+```
+## 6.2. Testabilidade e Cobertura
+
+### Presença de Testes
+- O projeto não possui qualquer tipo de teste automatizado, incluindo:
+  - Testes unitários  
+  - Testes de integração  
+  - Testes end-to-end  
+
+### Cobertura de Código
+- Não existe medição de cobertura de código, pois nenhuma ferramenta de testes foi configurada.
+
+### Qualidade dos Testes
+- Inexistente, devido à ausência total de testes.  
+- A lógica de negócio não é validada de forma isolada.
+
+### Mocking
+- Não há utilização de mocks, stubs ou frameworks de testes para isolamento de dependências.
+
+### Evidência / Exemplo
+- O diretório `src/test` não contém testes implementados, inclusive para funcionalidades críticas como:
+  - Compra de benefícios  
+  - Geração de cupons  
+  - Controle de saldo dos usuários  
+
+---
+
+## 6.3. Segurança e Tratamento de Erros
+
+A análise de segurança foi realizada com base em vulnerabilidades comuns descritas no **OWASP Top 10**.
+
+### Autenticação
+- O sistema possui segurança apenas no processo de autenticação, utilizando **JWT (JSON Web Token)**.  
+- A proteção do sistema está limitada à verificação do token nas requisições.
+
+### Validação de Entrada
+- Não há validação rigorosa e padronizada para todos os dados recebidos nos endpoints.  
+- Não foi identificada sanitização explícita de entradas para prevenção de ataques como **XSS**.
+
+### Tratamento de Credenciais
+- O tratamento de credenciais não é detalhado de forma clara no código analisado.  
+- Não há evidências explícitas de mecanismos avançados de proteção além do uso do JWT.
+
+### Tratamento de Exceções
+- O tratamento de exceções é limitado.  
+- Em alguns cenários, a aplicação pode expor mensagens técnicas ou não tratar corretamente falhas inesperadas.
+
+### Evidência / Exemplo
+- Segurança restrita à autenticação via JWT.  
+- Ausência de validação centralizada de dados de entrada.  
+- Falta de tratamento global de exceções.
 
 ---
 
 ## 🚀 7. Sugestões de Melhorias
 
-Liste **entre 5 e 7 sugestões claras e prioritárias** para os autores do projeto, baseadas nas análises acima (Seções 3, 4, 5 e 6).
+Com base nas análises realizadas nas Seções 3, 4, 5 e 6, foram identificadas oportunidades claras de melhoria no projeto **EduCoin**, principalmente relacionadas à organização do código, qualidade, testabilidade e segurança.
 
-1. **Melhoria da Documentação:** Criar um arquivo `CONTRIBUTING.md`, adicionar instruções completas de configuração do ambiente (Java, Maven, variáveis de ambiente e scripts de inicialização) e incluir uma seção de troubleshooting no `README.md`.
-2. **Padronização do Código:** Adotar **Conventional Commits**, habilitar ferramentas como **Spotless**, **Checkstyle** ou **SonarLint** para manter consistência e detectar code smells automaticamente.
-3. **Testes Automatizados:** Implementar testes unitários na camada de **Service** e testes de integração com **Spring Boot Test**, buscando ao menos **80% de cobertura** nas funcionalidades principais.
-4. **Melhorias de Segurança:** Utilizar **Spring Validation** para validação de DTOs, adicionar tratamento centralizado de erros com `@ControllerAdvice`, remover informações sensíveis de logs e revisar dependências vulneráveis usando `mvn dependency-check`.
-5. **Organização do Repositório:** Padronizar a estrutura de pastas, adicionar templates de Pull Request e Issues, além de configurar Branch Protection para `main`.
-6. **Performance e Otimização:** Analisar pontos de gargalo no carregamento de dados, reduzir consultas redundantes, aplicar cache quando adequado e revisar métodos que fazem processamento excessivo no backend.
-7. **Automação e CI/CD:** Criar uma pipeline no **GitHub Actions** para rodar testes, verificar estilo, validar segurança das dependências e realizar build automático a cada PR.
+1. **Aplicação de Princípios de Design (SOLID):**  
+   Refatorar o código para aplicar princípios básicos de design, especialmente o **Single Responsibility Principle (SRP)**, removendo lógica de negócio dos *Controllers* e centralizando-a na camada de *Service*, reduzindo o acoplamento entre camadas.
+
+2. **Reorganização da Camada de Controle:**  
+   Eliminar o acesso direto dos *Controllers* aos *Repositories*, garantindo que toda a comunicação com a persistência ocorra exclusivamente por meio da camada de serviço.
+
+3. **Remoção de Código Duplicado:**  
+   Identificar trechos de código repetidos e refatorá-los para métodos reutilizáveis ou serviços específicos, melhorando a manutenibilidade e reduzindo riscos de inconsistência.
+
+4. **Implementação de Testes Automatizados:**  
+   Introduzir testes unitários para a camada de *Service* e testes de integração básicos com **Spring Boot Test**, garantindo validação da lógica de negócio e reduzindo regressões futuras.
+
+5. **Padronização de Validações e Tratamento de Erros:**  
+   Utilizar **Bean Validation** nos DTOs e implementar tratamento global de exceções com `@ControllerAdvice`, evitando exposição de erros técnicos e padronizando as respostas da API.
+
+6. **Melhoria da Segurança da Aplicação:**  
+   Complementar a autenticação via **JWT** com validações de entrada mais rigorosas, revisão de permissões por perfil e maior controle sobre dados sensíveis trafegados e registrados em logs.
+
+7. **Atualização e Manutenção do Frontend:**  
+   Atualizar e manter as dependências do frontend, evitando bibliotecas desatualizadas, além de documentar claramente as versões recomendadas de Node.js e dos principais pacotes utilizados.
 
 ---
 
@@ -201,40 +288,53 @@ Cada refatoração deve conter:
 
 ### 1️⃣ Refatoração 1 – Extração de Método (Extract Method)
 
-**Arquivo:** `src/main/java/com/example/service/UserService.java`  
-**Pull Request:** https://github.com/exemplo/projeto/pull/1  
+**Arquivo:** `/src/main/java/com/example/sistema_moeda_estudantil/controllers/BenefitsController.java`
+
+**Pull Request:** Essa melhoria foi feita na branch main
 
 #### 🔴 Antes
 ```java
-public User createUser(UserDTO dto) {
-    if (dto.getEmail() == null || !dto.getEmail().contains("@")) {
-        throw new IllegalArgumentException("Email inválido");
-    }
-    if (dto.getPassword() == null || dto.getPassword().length() < 8) {
-        throw new IllegalArgumentException("Senha fraca");
+    public ResponseEntity<?> purchaseBenefitAndGenerateCoupon(@PathVariable String benefitId, @RequestParam long cost) {
+        User user = userService.getSenderUser();
+        user.setCurrency(user.getCurrency() - cost);
+        userRepository.save(user);
+
+        final String coupon = generateCouponCode();
+
+        return ResponseEntity.ok(new PurchaseDTO(coupon));
     }
 
-    User user = new User(dto.getEmail(), dto.getPassword());
-    return userRepository.save(user);
+    private String generateCouponCode() {
+        return RandomStringUtils.random(6, true, true); // letras + números
+    }
 }
 ```
 
+**Arquivo:** `/src/main/java/com/example/sistema_moeda_estudantil/services/BenefitsService.java`
+
 #### 🟢 Depois
 ```java
-private void validateUserDTO(UserDTO dto) {
-    if (dto.getEmail() == null || !dto.getEmail().contains("@")) {
-        throw new IllegalArgumentException("Email inválido");
-    }
-    if (dto.getPassword() == null || dto.getPassword().length() < 8) {
-        throw new IllegalArgumentException("Senha fraca");
-    }
-}
+@PostMapping("/purchase/{benefitId}")
+    public ResponseEntity<PurchaseDTO> purchaseBenefit(
+            @PathVariable String benefitId,
+            @RequestParam long cost) {
 
-public User createUser(UserDTO dto) {
-    validateUserDTO(dto);
-    User user = new User(dto.getEmail(), dto.getPassword());
-    return userRepository.save(user);
-}
+        PurchaseDTO dto = benefitService.purchaseBenefit(benefitId, cost);
+        return ResponseEntity.ok(dto);
+    }
+```
+
+```java
+public PurchaseDTO purchaseBenefit(String benefitId, long cost) {
+
+        User user = userService.getSenderUser();
+        user.setCurrency(user.getCurrency() - cost);
+        userRepository.save(user);
+
+        String coupon = RandomStringUtils.random(6, true, true);
+
+        return new PurchaseDTO(coupon);
+    }
 ```
 
 #### ✔ Tipo de refatoração aplicada
@@ -285,7 +385,7 @@ Elimina duplicação e facilita manutenção.
 
 ---
 
-### 3️⃣ Refatoração 3 – Melhoria de Nomes (Rename)
+### 3️⃣ Refatoração 3 – 
 
 **Arquivo:** `src/main/java/com/example/controller/ProductController.java`  
 **Pull Request:** https://github.com/exemplo/projeto/pull/3  

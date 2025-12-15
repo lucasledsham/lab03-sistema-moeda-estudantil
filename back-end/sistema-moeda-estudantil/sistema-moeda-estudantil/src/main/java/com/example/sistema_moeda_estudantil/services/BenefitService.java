@@ -85,4 +85,25 @@ public class BenefitService {
 
         return new PurchaseDTO(coupon);
     }
+
+    public Benefit updateBenefit(String benefitId, String benefitJson) throws Exception {
+
+        BenefitDTO dto = mapper.readValue(benefitJson, BenefitDTO.class);
+
+        Benefit benefit = benefitRepository.findById(benefitId)
+                .orElseThrow(() -> new RuntimeException("Benefício não encontrado."));
+
+        benefit.setDescription(dto.description());
+        benefit.setCost(dto.cost());
+
+        return benefitRepository.save(benefit);
+    }
+
+    public void deleteBenefit(String id) {
+
+        Benefit benefit = benefitRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Benefício não encontrado."));
+
+        benefitRepository.delete(benefit);
+    }
 }

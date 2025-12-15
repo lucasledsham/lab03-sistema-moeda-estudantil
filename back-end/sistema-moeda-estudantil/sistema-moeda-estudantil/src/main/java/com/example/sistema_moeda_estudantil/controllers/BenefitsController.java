@@ -23,10 +23,8 @@ public class BenefitsController {
     private final BenefitRepository benefitRepository;
 
     @PostMapping(consumes = {"multipart/form-data"})
-    public ResponseEntity<?> sendBenefit(
-            @RequestParam("benefit") String benefitJson,
-            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
-
+    public ResponseEntity<?> sendBenefit(@RequestParam("benefit") String benefitJson,
+                                         @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         try {
             Benefit benefit = benefitService.createBenefit(benefitJson, imageFile);
             return ResponseEntity.ok(benefit);
@@ -58,5 +56,40 @@ public class BenefitsController {
 
         PurchaseDTO dto = benefitService.purchaseBenefit(benefitId, cost);
         return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/update/{benefitId}")
+    public ResponseEntity<?> updateBenefit(@PathVariable String benefitId,
+            @RequestParam("benefit") String benefitJson) {
+
+        try {
+            Benefit benefit = benefitService.updateBenefit(benefitId, benefitJson);
+            return ResponseEntity.ok(benefit);
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Erro ao atualizar benefício: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/excluir/{benefitId}")
+    public ResponseEntity<?> deleteBenefit(@PathVariable String benefitId) {
+
+        try {
+            benefitService.deleteBenefit(benefitId);
+            return ResponseEntity.noContent().build();
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Erro ao excluir benefício: " + e.getMessage());
+        }
     }
 }
